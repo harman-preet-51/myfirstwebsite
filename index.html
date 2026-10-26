@@ -6,67 +6,68 @@
     <title>LTSUCare Project - Lamrin Tech Skills University Punjab</title>
     <style>
         :root {
-            --primary: #4338ca;
-            --primary-dark: #312e81;
-            --accent: #4f46e5;
-            --bg-gradient: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            --primary: #6b21a8;        /* Rich Purple */
+            --primary-dark: #4c1d95;   /* Deep Plum */
+            --accent: #10b981;         /* Vibrant Emerald Green */
+            --accent-hover: #059669;
+            --bg-gradient: linear-gradient(135deg, #fdf4ff 0%, #fef3c7 50%, #ecfdf5 100%); /* Colourful warm multi-tone background */
             --card-bg: #ffffff;
-            --text-dark: #1e293b;
-            --text-muted: #64748b;
-            --danger: #ef4444;
-            --success: #22c55e;
-            --warning: #f59e0b;
+            --text-dark: #18181b;
+            --text-muted: #52525b;
+            --danger: #f43f5e;         /* Coral Rose */
+            --success: #059669;
+            --warning: #d97706;        /* Warm Amber */
         }
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
         body { background: var(--bg-gradient); color: var(--text-dark); min-height: 100vh; line-height: 1.6; }
         
-        header { background: var(--primary-dark); color: white; padding: 1.25rem 2rem; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
-        header h1 { font-size: 1.4rem; letter-spacing: 0.5px; }
+        header { background: linear-gradient(90deg, var(--primary-dark), #9333ea); color: white; padding: 1.25rem 2rem; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 15px rgba(107, 33, 168, 0.2); }
+        header h1 { font-size: 1.4rem; letter-spacing: 0.5px; font-weight: 700; }
         
         .container { max-width: 1100px; margin: 2.5rem auto; padding: 0 1.5rem; }
         
-        .card { background: var(--card-bg); padding: 2.5rem; border-radius: 12px; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.05); margin-bottom: 2rem; border: 1px solid rgba(226, 232, 240, 0.8); }
+        .card { background: var(--card-bg); padding: 2.5rem; border-radius: 16px; box-shadow: 0 10px 25px -5px rgba(147, 51, 234, 0.08), 0 8px 10px -6px rgba(147, 51, 234, 0.05); margin-bottom: 2rem; border: 2px solid #f3e8ff; }
         
         h2, h3 { color: var(--primary-dark); margin-bottom: 1.25rem; font-weight: 700; }
         p { color: var(--text-muted); }
         
         .form-group { margin-bottom: 1.25rem; }
         label { display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--text-dark); font-size: 0.95rem; }
-        input, select, textarea { width: 100%; padding: 0.85rem 1rem; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 1rem; background: #f8fafc; transition: all 0.3s; }
-        input:focus, select:focus, textarea:focus { outline: none; border-color: var(--accent); background: #fff; box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15); }
+        input, select, textarea { width: 100%; padding: 0.85rem 1rem; border: 2px solid #e9d5ff; border-radius: 10px; font-size: 1rem; background: #faf5ff; transition: all 0.3s; }
+        input:focus, select:focus, textarea:focus { outline: none; border-color: var(--accent); background: #fff; box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.15); }
         
-        button { background: var(--accent); color: white; border: none; padding: 0.85rem 1.75rem; border-radius: 8px; font-size: 1rem; cursor: pointer; font-weight: 600; transition: background 0.2s, transform 0.1s; box-shadow: 0 4px 6px rgba(79, 70, 229, 0.2); }
-        button:hover { background: #4338ca; transform: translateY(-1px); }
-        button.danger { background: var(--danger); box-shadow: 0 4px 6px rgba(239, 68, 68, 0.2); }
-        button.danger:hover { background: #dc2626; }
-        button.secondary { background: #475569; box-shadow: 0 4px 6px rgba(71, 85, 105, 0.2); }
-        button.secondary:hover { background: #334155; }
+        button { background: var(--accent); color: white; border: none; padding: 0.85rem 1.75rem; border-radius: 10px; font-size: 1rem; cursor: pointer; font-weight: 600; transition: all 0.2s; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3); }
+        button:hover { background: var(--accent-hover); transform: translateY(-2px); box-shadow: 0 6px 15px rgba(16, 185, 129, 0.4); }
+        button.danger { background: var(--danger); box-shadow: 0 4px 12px rgba(244, 63, 94, 0.3); }
+        button.danger:hover { background: #e11d48; }
+        button.secondary { background: #78716c; box-shadow: 0 4px 12px rgba(120, 113, 108, 0.3); }
+        button.secondary:hover { background: #57534e; }
         
         .hidden { display: none !important; }
         
-        table { width: 100%; border-collapse: collapse; margin-top: 1.25rem; background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
-        th, td { padding: 1rem; border-bottom: 1px solid #e2e8f0; text-align: left; font-size: 0.95rem; }
-        th { background: #f1f5f9; color: var(--primary-dark); font-weight: 600; }
+        table { width: 100%; border-collapse: collapse; margin-top: 1.25rem; background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+        th, td { padding: 1rem; border-bottom: 1px solid #f3e8ff; text-align: left; font-size: 0.95rem; }
+        th { background: #faf5ff; color: var(--primary-dark); font-weight: 700; }
         
-        .badge { padding: 0.35rem 0.75rem; border-radius: 50px; font-size: 0.8rem; font-weight: 700; display: inline-block; text-transform: uppercase; letter-spacing: 0.5px; }
-        .badge-submitted { background: #fef9c3; color: #854d0e; }
-        .badge-review { background: #e0f2fe; color: #0369a1; }
-        .badge-progress { background: #f3e8ff; color: #7e22ce; }
-        .badge-resolved { background: #dcfce7; color: #15803d; }
+        .badge { padding: 0.35rem 0.85rem; border-radius: 50px; font-size: 0.8rem; font-weight: 700; display: inline-block; text-transform: uppercase; letter-spacing: 0.5px; }
+        .badge-submitted { background: #fef3c7; color: #92400e; }
+        .badge-review { background: #f3e8ff; color: #6b21a8; }
+        .badge-progress { background: #ffedd5; color: #c2410c; }
+        .badge-resolved { background: #d1fae5; color: #065f46; }
         
-        .nav-tabs { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.75rem; border-bottom: 2px solid #e2e8f0; padding-bottom: 0.75rem; }
-        .nav-tabs button { background: #e2e8f0; color: var(--text-dark); padding: 0.6rem 1rem; box-shadow: none; font-size: 0.9rem; }
-        .nav-tabs button.active { background: var(--accent); color: white; }
+        .nav-tabs { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-bottom: 1.75rem; border-bottom: 3px solid #f3e8ff; padding-bottom: 0.75rem; }
+        .nav-tabs button { background: #f3e8ff; color: var(--primary-dark); padding: 0.7rem 1.25rem; box-shadow: none; font-size: 0.95rem; font-weight: 700; border-radius: 10px; }
+        .nav-tabs button.active { background: linear-gradient(135deg, var(--primary), #9333ea); color: white; box-shadow: 0 4px 12px rgba(147, 51, 234, 0.3); }
         
-        .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(4px); display: flex; justify-content: center; align-items: center; z-index: 1000; }
-        .modal-content { background: white; padding: 2.5rem; border-radius: 16px; max-width: 480px; width: 100%; text-align: center; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1); }
+        .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(24, 24, 27, 0.6); backdrop-filter: blur(6px); display: flex; justify-content: center; align-items: center; z-index: 1000; }
+        .modal-content { background: white; padding: 2.5rem; border-radius: 20px; max-width: 480px; width: 100%; text-align: center; box-shadow: 0 25px 30px -10px rgba(0,0,0,0.2); border: 2px solid #f3e8ff; }
         
         .timeline { display: flex; justify-content: space-between; margin-top: 0.75rem; position: relative; font-size: 0.8rem; color: var(--text-muted); }
         .timeline-step { text-align: center; flex: 1; position: relative; }
-        .timeline-step span { width: 24px; height: 24px; border-radius: 50%; background: #cbd5e1; display: inline-block; line-height: 24px; color: white; font-weight: bold; margin-bottom: 4px; font-size: 0.75rem; }
-        .timeline-step.active span { background: var(--success); }
+        .timeline-step span { width: 26px; height: 26px; border-radius: 50%; background: #e4e4e7; display: inline-block; line-height: 26px; color: white; font-weight: bold; margin-bottom: 4px; font-size: 0.75rem; }
+        .timeline-step.active span { background: var(--accent); box-shadow: 0 0 10px rgba(16, 185, 129, 0.5); }
 
-        .ai-suggestion-box { background: #e0f2fe; border-left: 4px solid var(--accent); padding: 1rem; border-radius: 0 8px 8px 0; margin-bottom: 1.25rem; font-size: 0.95rem; color: #0369a1; }
+        .ai-suggestion-box { background: #faf5ff; border-left: 5px solid var(--primary); padding: 1.25rem; border-radius: 0 12px 12px 0; margin-bottom: 1.25rem; font-size: 0.95rem; color: #581c87; border-top: 1px solid #f3e8ff; border-right: 1px solid #f3e8ff; border-bottom: 1px solid #f3e8ff; box-shadow: 0 2px 6px rgba(147, 51, 234, 0.04); }
     </style>
 </head>
 <body>
@@ -74,7 +75,7 @@
     <header>
         <h1>🏛️ LTSUCare Project — Lamrin Tech Skills University Punjab</h1>
         <div id="user-info" class="hidden">
-            <span id="welcome-msg" style="font-weight: 600; margin-right: 1rem;"></span>
+            <span id="welcome-msg" style="font-weight: 700; margin-right: 1rem; background: rgba(255,255,255,0.15); padding: 0.4rem 0.8rem; border-radius: 8px;"></span>
             <button onclick="logout()" class="secondary" style="padding: 0.4rem 1rem; font-size: 0.9rem;">Logout</button>
         </div>
     </header>
@@ -84,7 +85,7 @@
         <!-- AUTH SCREEN -->
         <div id="auth-screen" class="card">
             <h2>Campus Problem Reporting Portal</h2>
-            <p style="margin-bottom: 1.75rem;">Fast, secure, and transparent campus grievance resolution system.</p>
+            <p style="margin-bottom: 1.75rem;">Fast, secure, colourful and transparent university grievance resolution system.</p>
             
             <div class="nav-tabs">
                 <button type="button" class="active" onclick="switchAuthTab('student-login', this)">Student Login</button>
@@ -179,7 +180,7 @@
                 </div>
 
                 <div id="ai-suggestion-box" class="ai-suggestion-box">
-                    💡 <b>AI Assistant Guidance:</b> Select a category to get instant troubleshooting tips and resolution steps.
+                    ✨ <b>AI Assistant Guidance:</b> Select a category to get instant troubleshooting tips and resolution steps.
                 </div>
 
                 <div class="form-group">
@@ -236,7 +237,7 @@
                 <h2>Super Admin Master Dashboard</h2>
                 <p>Complete authority over all records, escalations, student account recovery, and system management.</p>
                 
-                <div style="background: #f8fafc; padding: 1.5rem; border-radius: 8px; margin: 1.5rem 0; border: 1px solid #cbd5e1;">
+                <div style="background: #faf5ff; padding: 1.5rem; border-radius: 12px; margin: 1.5rem 0; border: 2px solid #f3e8ff;">
                     <h3 style="font-size: 1.1rem; margin-bottom: 0.75rem;">🔑 Student Lost Password Recovery</h3>
                     <input type="text" id="reset-student-id" placeholder="Enter Student Account ID (e.g. LTSU-USER-1001)" style="width: 320px; display: inline-block; margin-right: 1rem;">
                     <button onclick="superAdminResetPassword()" class="secondary" style="display: inline-block;">Reset Password</button>
@@ -253,7 +254,7 @@
         <div class="modal-content">
             <h3 style="color: var(--danger); margin-bottom: 1rem;">⚠️ Single-Time Password Notice</h3>
             <p style="margin-bottom: 1.25rem; font-size: 0.95rem;">Your account has been registered. This generated password is shown <strong>only once</strong>. Please take a screenshot or write it down immediately!</p>
-            <div id="modal-cred-box" style="background: #f1f5f9; padding: 1.25rem; border-radius: 8px; font-weight: bold; margin-bottom: 1.5rem; text-align: left; border: 1px dashed #94a3b8;"></div>
+            <div id="modal-cred-box" style="background: #faf5ff; padding: 1.25rem; border-radius: 12px; font-weight: bold; margin-bottom: 1.5rem; text-align: left; border: 2px dashed #c084fc; color: #581c87;"></div>
             <button onclick="closeCredentialModal()">I have saved my credentials safely</button>
         </div>
     </div>
@@ -285,7 +286,7 @@
             else if (cat.includes('Cleanliness')) tip = "AI Suggestion: Specify if extra garbage bins or immediate sweeping/sanitation staff is required.";
             
             const box = document.getElementById('ai-suggestion-box');
-            if (box) box.innerHTML = `💡 <b>AI Assistant Guidance:</b> ${tip}`;
+            if (box) box.innerHTML = `✨ <b>AI Assistant Guidance:</b> ${tip}`;
         }
         window.onload = generateAISuggestions;
 
@@ -307,7 +308,7 @@
             localStorage.setItem('ltsu_users', JSON.stringify(users));
 
             document.getElementById('modal-cred-box').innerHTML = `
-                Account ID: <span style="color:var(--accent);">${userId}</span><br>
+                Account ID: <span style="color:var(--primary);">${userId}</span><br>
                 Password: <span style="color:var(--danger);">${password}</span><br>
                 Student Name: ${name}
             `;
@@ -332,23 +333,3 @@
                 startDashboard();
             } else {
                 alert('Invalid Account ID or Password.');
-            }
-        }
-
-        function loginAdmin() {
-            const username = document.getElementById('admin-user').value.trim();
-            const pass = document.getElementById('admin-pass').value.trim();
-
-            if (username.toLowerCase() === 'admin' && pass === 'Admin@LTSU2026') {
-                currentUser = { name: 'Campus Administrator', role: 'admin' };
-                startDashboard();
-            } else {
-                alert('Invalid Admin credentials. Use username: admin and password: Admin@LTSU2026');
-            }
-        }
-
-        function loginSuperAdmin() {
-            const username = document.getElementById('superadmin-user').value.trim();
-            const pass = document.getElementById('superadmin-pass').value.trim();
-
-            if (username.toLowerCase() === 'superadmin' && pa
