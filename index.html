@@ -25,7 +25,7 @@
         
         .container { max-width: 1100px; margin: 2.5rem auto; padding: 0 1.5rem; }
         
-        .card { background: var(--card-bg); padding: 2.5rem; border-radius: 12px; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.05), 0 4px 6px -4px rgba(0,0,0,0.05); margin-bottom: 2rem; border: 1px solid rgba(226, 232, 240, 0.8); }
+        .card { background: var(--card-bg); padding: 2.5rem; border-radius: 12px; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.05); margin-bottom: 2rem; border: 1px solid rgba(226, 232, 240, 0.8); }
         
         h2, h3 { color: var(--primary-dark); margin-bottom: 1.25rem; font-weight: 700; }
         p { color: var(--text-muted); }
@@ -54,21 +54,18 @@
         .badge-progress { background: #f3e8ff; color: #7e22ce; }
         .badge-resolved { background: #dcfce7; color: #15803d; }
         
-        .nav-tabs { display: flex; gap: 0.5rem; margin-bottom: 1.75rem; border-bottom: 2px solid #e2e8f0; padding-bottom: 0.75rem; }
-        .nav-tabs button { background: #e2e8f0; color: var(--text-dark); padding: 0.6rem 1.25rem; box-shadow: none; font-size: 0.95rem; }
+        .nav-tabs { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.75rem; border-bottom: 2px solid #e2e8f0; padding-bottom: 0.75rem; }
+        .nav-tabs button { background: #e2e8f0; color: var(--text-dark); padding: 0.6rem 1rem; box-shadow: none; font-size: 0.9rem; }
         .nav-tabs button.active { background: var(--accent); color: white; }
         
-        /* Modal Design */
         .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(4px); display: flex; justify-content: center; align-items: center; z-index: 1000; }
         .modal-content { background: white; padding: 2.5rem; border-radius: 16px; max-width: 480px; width: 100%; text-align: center; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1); }
         
-        /* Timeline Tracker */
         .timeline { display: flex; justify-content: space-between; margin-top: 0.75rem; position: relative; font-size: 0.8rem; color: var(--text-muted); }
         .timeline-step { text-align: center; flex: 1; position: relative; }
         .timeline-step span { width: 24px; height: 24px; border-radius: 50%; background: #cbd5e1; display: inline-block; line-height: 24px; color: white; font-weight: bold; margin-bottom: 4px; font-size: 0.75rem; }
         .timeline-step.active span { background: var(--success); }
 
-        /* AI Suggestions Box */
         .ai-suggestion-box { background: #e0f2fe; border-left: 4px solid var(--accent); padding: 1rem; border-radius: 0 8px 8px 0; margin-bottom: 1.25rem; font-size: 0.95rem; color: #0369a1; }
     </style>
 </head>
@@ -90,9 +87,10 @@
             <p style="margin-bottom: 1.75rem;">Fast, secure, and transparent campus grievance resolution system.</p>
             
             <div class="nav-tabs">
-                <button class="active" onclick="switchAuthTab('student-login')">Student Login</button>
-                <button onclick="switchAuthTab('student-register')">Student Register</button>
-                <button onclick="switchAuthTab('staff-login')">Staff & Admin Portal</button>
+                <button type="button" class="active" onclick="switchAuthTab('student-login', this)">Student Login</button>
+                <button type="button" onclick="switchAuthTab('student-register', this)">Student Register</button>
+                <button type="button" onclick="switchAuthTab('staff-login', this)">Admin Portal</button>
+                <button type="button" onclick="switchAuthTab('super-staff-login', this)">Super Admin Portal</button>
             </div>
 
             <!-- Student Login -->
@@ -127,18 +125,32 @@
                 <button onclick="registerStudent()">Generate Credentials</button>
             </div>
 
-            <!-- Staff Login -->
+            <!-- Admin Login -->
             <div id="tab-staff-login" class="hidden">
-                <h3>Admin & Super Admin Portal</h3>
+                <h3>Admin Portal Login</h3>
                 <div class="form-group">
-                    <label>Username / Role Name</label>
-                    <input type="text" id="staff-user" placeholder="Enter Admin or Super Admin username">
+                    <label>Admin Username</label>
+                    <input type="text" id="admin-user" placeholder="Enter username (admin)">
                 </div>
                 <div class="form-group">
                     <label>Password</label>
-                    <input type="password" id="staff-pass" placeholder="Enter password">
+                    <input type="password" id="admin-pass" placeholder="Enter password (Admin@LTSU2026)">
                 </div>
-                <button onclick="loginStaff()">Authenticate Staff</button>
+                <button onclick="loginAdmin()">Login as Admin</button>
+            </div>
+
+            <!-- Super Admin Login -->
+            <div id="tab-super-staff-login" class="hidden">
+                <h3>Super Admin Master Login</h3>
+                <div class="form-group">
+                    <label>Super Admin Username</label>
+                    <input type="text" id="superadmin-user" placeholder="Enter username (superadmin)">
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" id="superadmin-pass" placeholder="Enter password (Superadmin@LTSU2026)">
+                </div>
+                <button onclick="loginSuperAdmin()">Login as Super Admin</button>
             </div>
         </div>
 
@@ -147,28 +159,27 @@
             <div class="card">
                 <h2>Raise a New Campus Complaint</h2>
                 <div class="form-group">
-                    <label>Problem Category</label>
+                    <label>Problem Category (14 University Categories)</label>
                     <select id="comp-category" onchange="generateAISuggestions()">
-                        <option value="Water Supply and Drainage">Water Supply and Drainage</option>
-                        <option value="Cleanliness and Garbage">Cleanliness and Garbage</option>
-                        <option value="Electricity and Lighting">Electricity and Lighting</option>
-                        <option value="Roads and Pathways">Roads and Pathways</option>
-                        <option value="Internet and Wi-Fi">Internet and Wi-Fi</option>
-                        <option value="Campus Security">Campus Security</option>
-                        <option value="Buildings and Infrastructure">Buildings and Infrastructure</option>
-                        <option value="Hostel Problems">Hostel Problems</option>
-                        <option value="Classrooms">Classrooms</option>
-                        <option value="Washrooms">Washrooms</option>
-                        <option value="Furniture and Equipment">Furniture and Equipment</option>
-                        <option value="Laboratory Problems">Laboratory Problems</option>
-                        <option value="Parking and Transportation">Parking and Transportation</option>
-                        <option value="Other Campus Problems">Other Campus Problems</option>
+                        <option value="Water Supply and Drainage">1. Water Supply and Drainage</option>
+                        <option value="Cleanliness and Garbage">2. Cleanliness and Garbage</option>
+                        <option value="Electricity and Lighting">3. Electricity and Lighting</option>
+                        <option value="Roads and Pathways">4. Roads and Pathways</option>
+                        <option value="Internet and Wi-Fi">5. Internet and Wi-Fi</option>
+                        <option value="Campus Security">6. Campus Security</option>
+                        <option value="Buildings and Infrastructure">7. Buildings and Infrastructure</option>
+                        <option value="Hostel Problems">8. Hostel Problems</option>
+                        <option value="Classrooms">9. Classrooms</option>
+                        <option value="Washrooms">10. Washrooms</option>
+                        <option value="Furniture and Equipment">11. Furniture and Equipment</option>
+                        <option value="Laboratory Problems">12. Laboratory Problems</option>
+                        <option value="Parking and Transportation">13. Parking and Transportation</option>
+                        <option value="Other Campus Problems">14. Other Campus Problems</option>
                     </select>
                 </div>
 
-                <!-- AI Suggestion Box -->
                 <div id="ai-suggestion-box" class="ai-suggestion-box">
-                    💡 <b>AI Assistant Guidance:</b> Select a category to get instant troubleshooting tips and resolution steps before submitting.
+                    💡 <b>AI Assistant Guidance:</b> Select a category to get instant troubleshooting tips and resolution steps.
                 </div>
 
                 <div class="form-group">
@@ -248,22 +259,23 @@
     </div>
 
     <script>
-        // Initialize localStorage Database
         if (!localStorage.getItem('ltsu_users')) localStorage.setItem('ltsu_users', JSON.stringify([]));
         if (!localStorage.getItem('ltsu_complaints')) localStorage.setItem('ltsu_complaints', JSON.stringify([]));
 
         let currentUser = null;
 
-        function switchAuthTab(tabId) {
-            ['student-login', 'student-register', 'staff-login'].forEach(id => {
-                document.getElementById('tab-' + id).classList.add('hidden');
+        function switchAuthTab(tabId, btnElement) {
+            ['student-login', 'student-register', 'staff-login', 'super-staff-login'].forEach(id => {
+                const el = document.getElementById('tab-' + id);
+                if (el) el.classList.add('hidden');
             });
             document.querySelectorAll('.nav-tabs button').forEach(btn => btn.classList.remove('active'));
-            document.getElementById('tab-' + tabId).classList.remove('hidden');
-            event.target.classList.add('active');
+            
+            const targetTab = document.getElementById('tab-' + tabId);
+            if (targetTab) targetTab.classList.remove('hidden');
+            if (btnElement) btnElement.classList.add('active');
         }
 
-        // AI Assistant Suggestion Generator based on Category
         function generateAISuggestions() {
             const cat = document.getElementById('comp-category').value;
             let tip = "Make sure to enter exact block and room details for faster resolution.";
@@ -272,11 +284,11 @@
             else if (cat.includes('Internet')) tip = "AI Suggestion: Mention whether it's Wi-Fi (LAN/SSID) or wired connection issue along with router indicator status.";
             else if (cat.includes('Cleanliness')) tip = "AI Suggestion: Specify if extra garbage bins or immediate sweeping/sanitation staff is required.";
             
-            document.getElementById('ai-suggestion-box').innerHTML = `💡 <b>AI Assistant Guidance:</b> ${tip}`;
+            const box = document.getElementById('ai-suggestion-box');
+            if (box) box.innerHTML = `💡 <b>AI Assistant Guidance:</b> ${tip}`;
         }
         window.onload = generateAISuggestions;
 
-        // Student Registration
         function registerStudent() {
             const name = document.getElementById('reg-name').value.trim();
             const course = document.getElementById('reg-course').value.trim();
@@ -304,10 +316,10 @@
 
         function closeCredentialModal() {
             document.getElementById('credential-modal').classList.add('hidden');
-            switchAuthTab('student-login');
+            const loginBtn = document.querySelector('.nav-tabs button');
+            switchAuthTab('student-login', loginBtn);
         }
 
-        // Student Login
         function loginStudent() {
             const id = document.getElementById('login-id').value.trim();
             const pass = document.getElementById('login-pass').value.trim();
@@ -323,32 +335,20 @@
             }
         }
 
-        // Staff Login (Admin & Super Admin with exact passwords requested)
-        function loginStaff() {
-            const username = document.getElementById('staff-user').value.trim();
-            const pass = document.getElementById('staff-pass').value.trim();
+        function loginAdmin() {
+            const username = document.getElementById('admin-user').value.trim();
+            const pass = document.getElementById('admin-pass').value.trim();
 
-            if (username.toLowerCase() === 'superadmin' && pass === 'Superadmin@LTSU2026') {
-                currentUser = { name: 'Super Administrator', role: 'super-admin' };
-                startDashboard();
-            } else if (username.toLowerCase() === 'admin' && pass === 'Admin@LTSU2026') {
+            if (username.toLowerCase() === 'admin' && pass === 'Admin@LTSU2026') {
                 currentUser = { name: 'Campus Administrator', role: 'admin' };
                 startDashboard();
             } else {
-                alert('Invalid staff credentials. Please use correct Admin or Super Admin username and password.');
+                alert('Invalid Admin credentials. Use username: admin and password: Admin@LTSU2026');
             }
         }
 
-        function startDashboard() {
-            document.getElementById('auth-screen').classList.add('hidden');
-            document.getElementById('user-info').classList.remove('hidden');
-            document.getElementById('welcome-msg').innerText = `${currentUser.name} (${currentUser.role.toUpperCase()})`;
+        function loginSuperAdmin() {
+            const username = document.getElementById('superadmin-user').value.trim();
+            const pass = document.getElementById('superadmin-pass').value.trim();
 
-            if (currentUser.role === 'student') {
-                document.getElementById('student-dashboard').classList.remove('hidden');
-                loadStudentComplaints();
-            } else if (currentUser.role === 'admin') {
-                document.getElementById('admin-dashboard').classList.remove('hidden');
-                loadAdminComplaints();
-            } else if (currentUser.role === 'super-admin') {
-                document.getElementById('super-admin-dashboard').classList.remove('hidden');
+            if (username.toLowerCase() === 'superadmin' && pa
