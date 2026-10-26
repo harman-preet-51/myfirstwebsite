@@ -1,110 +1,354 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>My First Website</title>
-  <style>
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #0f172a;
-      color: white;
-      line-height: 1.6;
-    }
-    header {
-      padding: 22px 8%;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-bottom: 1px solid #334155;
-    }
-    .logo { font-size: 21px; font-weight: bold; color: #67e8f9; }
-    nav a { color: white; text-decoration: none; margin-left: 18px; }
-    main { text-align: center; padding: 85px 20px 65px; }
-    .tag {
-      color: #67e8f9;
-      border: 1px solid #155e75;
-      padding: 7px 14px;
-      border-radius: 25px;
-      display: inline-block;
-    }
-    h1 { font-size: clamp(36px, 7vw, 65px); line-height: 1.12; }
-    h1 span { color: #67e8f9; }
-    .intro { color: #cbd5e1; max-width: 600px; margin: 20px auto 28px; }
-    .btn {
-      display: inline-block;
-      background: #06b6d4;
-      color: #082f49;
-      padding: 12px 22px;
-      border-radius: 8px;
-      text-decoration: none;
-      font-weight: bold;
-      margin: 6px;
-    }
-    .btn2 { background: transparent; color: white; border: 1px solid #64748b; }
-    section { padding: 30px 8% 65px; }
-    h2 { text-align: center; }
-    .cards { display: flex; flex-wrap: wrap; gap: 18px; justify-content: center; }
-    .card {
-      background: #1e293b;
-      border: 1px solid #334155;
-      border-radius: 14px;
-      padding: 24px;
-      flex: 1 1 220px;
-      max-width: 330px;
-    }
-    .card h3 { color: #67e8f9; }
-    .card p { color: #cbd5e1; }
-    footer { text-align: center; padding: 25px; color: #94a3b8; border-top: 1px solid #334155; }
-    @media(max-width: 480px) {
-      header { padding: 18px; }
-      nav a { margin-left: 8px; font-size: 13px; }
-      main { padding-top: 60px; }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LTSUCare Project - Lamrin Tech Skills University Punjab</title>
+    <style>
+        :root {
+            --primary: #4338ca;
+            --primary-dark: #312e81;
+            --accent: #4f46e5;
+            --bg-gradient: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            --card-bg: #ffffff;
+            --text-dark: #1e293b;
+            --text-muted: #64748b;
+            --danger: #ef4444;
+            --success: #22c55e;
+            --warning: #f59e0b;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background: var(--bg-gradient); color: var(--text-dark); min-height: 100vh; line-height: 1.6; }
+        
+        header { background: var(--primary-dark); color: white; padding: 1.25rem 2rem; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
+        header h1 { font-size: 1.4rem; letter-spacing: 0.5px; }
+        
+        .container { max-width: 1100px; margin: 2.5rem auto; padding: 0 1.5rem; }
+        
+        .card { background: var(--card-bg); padding: 2.5rem; border-radius: 12px; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.05), 0 4px 6px -4px rgba(0,0,0,0.05); margin-bottom: 2rem; border: 1px solid rgba(226, 232, 240, 0.8); }
+        
+        h2, h3 { color: var(--primary-dark); margin-bottom: 1.25rem; font-weight: 700; }
+        p { color: var(--text-muted); }
+        
+        .form-group { margin-bottom: 1.25rem; }
+        label { display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--text-dark); font-size: 0.95rem; }
+        input, select, textarea { width: 100%; padding: 0.85rem 1rem; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 1rem; background: #f8fafc; transition: all 0.3s; }
+        input:focus, select:focus, textarea:focus { outline: none; border-color: var(--accent); background: #fff; box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15); }
+        
+        button { background: var(--accent); color: white; border: none; padding: 0.85rem 1.75rem; border-radius: 8px; font-size: 1rem; cursor: pointer; font-weight: 600; transition: background 0.2s, transform 0.1s; box-shadow: 0 4px 6px rgba(79, 70, 229, 0.2); }
+        button:hover { background: #4338ca; transform: translateY(-1px); }
+        button.danger { background: var(--danger); box-shadow: 0 4px 6px rgba(239, 68, 68, 0.2); }
+        button.danger:hover { background: #dc2626; }
+        button.secondary { background: #475569; box-shadow: 0 4px 6px rgba(71, 85, 105, 0.2); }
+        button.secondary:hover { background: #334155; }
+        
+        .hidden { display: none !important; }
+        
+        table { width: 100%; border-collapse: collapse; margin-top: 1.25rem; background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+        th, td { padding: 1rem; border-bottom: 1px solid #e2e8f0; text-align: left; font-size: 0.95rem; }
+        th { background: #f1f5f9; color: var(--primary-dark); font-weight: 600; }
+        
+        .badge { padding: 0.35rem 0.75rem; border-radius: 50px; font-size: 0.8rem; font-weight: 700; display: inline-block; text-transform: uppercase; letter-spacing: 0.5px; }
+        .badge-submitted { background: #fef9c3; color: #854d0e; }
+        .badge-review { background: #e0f2fe; color: #0369a1; }
+        .badge-progress { background: #f3e8ff; color: #7e22ce; }
+        .badge-resolved { background: #dcfce7; color: #15803d; }
+        
+        .nav-tabs { display: flex; gap: 0.5rem; margin-bottom: 1.75rem; border-bottom: 2px solid #e2e8f0; padding-bottom: 0.75rem; }
+        .nav-tabs button { background: #e2e8f0; color: var(--text-dark); padding: 0.6rem 1.25rem; box-shadow: none; font-size: 0.95rem; }
+        .nav-tabs button.active { background: var(--accent); color: white; }
+        
+        /* Modal Design */
+        .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(4px); display: flex; justify-content: center; align-items: center; z-index: 1000; }
+        .modal-content { background: white; padding: 2.5rem; border-radius: 16px; max-width: 480px; width: 100%; text-align: center; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1); }
+        
+        /* Timeline Tracker */
+        .timeline { display: flex; justify-content: space-between; margin-top: 0.75rem; position: relative; font-size: 0.8rem; color: var(--text-muted); }
+        .timeline-step { text-align: center; flex: 1; position: relative; }
+        .timeline-step span { width: 24px; height: 24px; border-radius: 50%; background: #cbd5e1; display: inline-block; line-height: 24px; color: white; font-weight: bold; margin-bottom: 4px; font-size: 0.75rem; }
+        .timeline-step.active span { background: var(--success); }
+
+        /* AI Suggestions Box */
+        .ai-suggestion-box { background: #e0f2fe; border-left: 4px solid var(--accent); padding: 1rem; border-radius: 0 8px 8px 0; margin-bottom: 1.25rem; font-size: 0.95rem; color: #0369a1; }
+    </style>
 </head>
 <body>
-  <header>
-    <div class="logo">Harman.dev</div>
-    <nav>
-      <a href="#home">Home</a>
-      <a href="#about">About</a>
-    </nav>
-  </header>
 
-  <main id="home">
-    <span class="tag">My First Web Project</span>
-    <h1>Ideas into <span>Reality.</span></h1>
-    <p class="intro">
-      Welcome to my first website, created with HTML and CSS
-      and published using GitHub Pages.
-    </p>
-    <a class="btn" href="#about">Explore Project ↓</a>
-    <a class="btn btn2" href="https://github.com/">Visit GitHub</a>
-  </main>
+    <header>
+        <h1>🏛️ LTSUCare Project — Lamrin Tech Skills University Punjab</h1>
+        <div id="user-info" class="hidden">
+            <span id="welcome-msg" style="font-weight: 600; margin-right: 1rem;"></span>
+            <button onclick="logout()" class="secondary" style="padding: 0.4rem 1rem; font-size: 0.9rem;">Logout</button>
+        </div>
+    </header>
 
-  <section id="about">
-    <h2>About This Project</h2>
-    <div class="cards">
-      <div class="card">
-        <h3>01. HTML</h3>
-        <p>HTML gives the website its structure and content.</p>
-      </div>
-      <div class="card">
-        <h3>02. CSS</h3>
-        <p>CSS adds colours, layout and a modern design.</p>
-      </div>
-      <div class="card">
-        <h3>03. GitHub Pages</h3>
-        <p>GitHub Pages can publish this website on the internet.</p>
-      </div>
+    <div class="container">
+        
+        <!-- AUTH SCREEN -->
+        <div id="auth-screen" class="card">
+            <h2>Campus Problem Reporting Portal</h2>
+            <p style="margin-bottom: 1.75rem;">Fast, secure, and transparent campus grievance resolution system.</p>
+            
+            <div class="nav-tabs">
+                <button class="active" onclick="switchAuthTab('student-login')">Student Login</button>
+                <button onclick="switchAuthTab('student-register')">Student Register</button>
+                <button onclick="switchAuthTab('staff-login')">Staff & Admin Portal</button>
+            </div>
+
+            <!-- Student Login -->
+            <div id="tab-student-login">
+                <h3>Student Portal Sign In</h3>
+                <div class="form-group">
+                    <label>Unique Account ID (e.g., LTSU-USER-1001)</label>
+                    <input type="text" id="login-id" placeholder="Enter your Account ID">
+                </div>
+                <div class="form-group">
+                    <label>Single-Time Password</label>
+                    <input type="password" id="login-pass" placeholder="Enter your password">
+                </div>
+                <button onclick="loginStudent()">Login to Dashboard</button>
+            </div>
+
+            <!-- Student Register -->
+            <div id="tab-student-register" class="hidden">
+                <h3>New Student Account Setup</h3>
+                <div class="form-group">
+                    <label>Full Name</label>
+                    <input type="text" id="reg-name" placeholder="Enter your full name">
+                </div>
+                <div class="form-group">
+                    <label>Course / Program</label>
+                    <input type="text" id="reg-course" placeholder="e.g. B.Tech CSE, BCA, B.Pharm">
+                </div>
+                <div class="form-group">
+                    <label>Mobile Number</label>
+                    <input type="text" id="reg-mobile" placeholder="Enter 10-digit mobile number">
+                </div>
+                <button onclick="registerStudent()">Generate Credentials</button>
+            </div>
+
+            <!-- Staff Login -->
+            <div id="tab-staff-login" class="hidden">
+                <h3>Admin & Super Admin Portal</h3>
+                <div class="form-group">
+                    <label>Username / Role Name</label>
+                    <input type="text" id="staff-user" placeholder="Enter Admin or Super Admin username">
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" id="staff-pass" placeholder="Enter password">
+                </div>
+                <button onclick="loginStaff()">Authenticate Staff</button>
+            </div>
+        </div>
+
+        <!-- STUDENT DASHBOARD -->
+        <div id="student-dashboard" class="hidden">
+            <div class="card">
+                <h2>Raise a New Campus Complaint</h2>
+                <div class="form-group">
+                    <label>Problem Category</label>
+                    <select id="comp-category" onchange="generateAISuggestions()">
+                        <option value="Water Supply and Drainage">Water Supply and Drainage</option>
+                        <option value="Cleanliness and Garbage">Cleanliness and Garbage</option>
+                        <option value="Electricity and Lighting">Electricity and Lighting</option>
+                        <option value="Roads and Pathways">Roads and Pathways</option>
+                        <option value="Internet and Wi-Fi">Internet and Wi-Fi</option>
+                        <option value="Campus Security">Campus Security</option>
+                        <option value="Buildings and Infrastructure">Buildings and Infrastructure</option>
+                        <option value="Hostel Problems">Hostel Problems</option>
+                        <option value="Classrooms">Classrooms</option>
+                        <option value="Washrooms">Washrooms</option>
+                        <option value="Furniture and Equipment">Furniture and Equipment</option>
+                        <option value="Laboratory Problems">Laboratory Problems</option>
+                        <option value="Parking and Transportation">Parking and Transportation</option>
+                        <option value="Other Campus Problems">Other Campus Problems</option>
+                    </select>
+                </div>
+
+                <!-- AI Suggestion Box -->
+                <div id="ai-suggestion-box" class="ai-suggestion-box">
+                    💡 <b>AI Assistant Guidance:</b> Select a category to get instant troubleshooting tips and resolution steps before submitting.
+                </div>
+
+                <div class="form-group">
+                    <label>Complaint Title</label>
+                    <input type="text" id="comp-title" placeholder="Short title e.g. Lab 3 AC not cooling">
+                </div>
+                
+                <div class="form-group">
+                    <label>Manual Location Typing (Block, Room No., Landmark)</label>
+                    <input type="text" id="comp-location" placeholder="Type location manually e.g. Academic Block 2, 3rd Floor, Room 304">
+                </div>
+
+                <div class="form-group">
+                    <label>Detailed Description</label>
+                    <textarea id="comp-desc" rows="3" placeholder="Explain the problem in detail..."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>📸 Media Evidence (Upload Photo / Video)</label>
+                    <input type="file" id="comp-media" accept="image/*,video/*">
+                    <small style="color:var(--text-muted);">Attach pictures or video clips as proof of the issue.</small>
+                </div>
+
+                <div class="form-group" style="margin-top: 1rem;">
+                    <label>Send Complaint To:</label>
+                    <select id="comp-target">
+                        <option value="Admin">Admin Portal (Local Maintenance)</option>
+                        <option value="Super Admin">Super Admin Portal (University Authority)</option>
+                        <option value="Both">Both Portals</option>
+                    </select>
+                </div>
+
+                <button onclick="submitComplaint()">Submit Complaint with Unique ID</button>
+            </div>
+
+            <div class="card">
+                <h2>My Submitted Complaints & Live Progress Tracker</h2>
+                <div id="student-complaints-list"></div>
+            </div>
+        </div>
+
+        <!-- ADMIN DASHBOARD -->
+        <div id="admin-dashboard" class="hidden">
+            <div class="card">
+                <h2>Admin Control Panel (Local Staff)</h2>
+                <p>Review assigned problems, update progress, or escalate complex issues to the Super Admin.</p>
+                <div id="admin-complaints-list" style="margin-top: 1.5rem;"></div>
+            </div>
+        </div>
+
+        <!-- SUPER ADMIN DASHBOARD -->
+        <div id="super-admin-dashboard" class="hidden">
+            <div class="card">
+                <h2>Super Admin Master Dashboard</h2>
+                <p>Complete authority over all records, escalations, student account recovery, and system management.</p>
+                
+                <div style="background: #f8fafc; padding: 1.5rem; border-radius: 8px; margin: 1.5rem 0; border: 1px solid #cbd5e1;">
+                    <h3 style="font-size: 1.1rem; margin-bottom: 0.75rem;">🔑 Student Lost Password Recovery</h3>
+                    <input type="text" id="reset-student-id" placeholder="Enter Student Account ID (e.g. LTSU-USER-1001)" style="width: 320px; display: inline-block; margin-right: 1rem;">
+                    <button onclick="superAdminResetPassword()" class="secondary" style="display: inline-block;">Reset Password</button>
+                </div>
+
+                <div id="super-admin-complaints-list"></div>
+            </div>
+        </div>
+
     </div>
-  </section>
 
-  <footer>
-    Created by Harman | My First Website · 2026
-  </footer>
-</body>
-</html>
+    <!-- CREDENTIAL MODAL -->
+    <div id="credential-modal" class="modal hidden">
+        <div class="modal-content">
+            <h3 style="color: var(--danger); margin-bottom: 1rem;">⚠️ Single-Time Password Notice</h3>
+            <p style="margin-bottom: 1.25rem; font-size: 0.95rem;">Your account has been registered. This generated password is shown <strong>only once</strong>. Please take a screenshot or write it down immediately!</p>
+            <div id="modal-cred-box" style="background: #f1f5f9; padding: 1.25rem; border-radius: 8px; font-weight: bold; margin-bottom: 1.5rem; text-align: left; border: 1px dashed #94a3b8;"></div>
+            <button onclick="closeCredentialModal()">I have saved my credentials safely</button>
+        </div>
+    </div>
+
+    <script>
+        // Initialize localStorage Database
+        if (!localStorage.getItem('ltsu_users')) localStorage.setItem('ltsu_users', JSON.stringify([]));
+        if (!localStorage.getItem('ltsu_complaints')) localStorage.setItem('ltsu_complaints', JSON.stringify([]));
+
+        let currentUser = null;
+
+        function switchAuthTab(tabId) {
+            ['student-login', 'student-register', 'staff-login'].forEach(id => {
+                document.getElementById('tab-' + id).classList.add('hidden');
+            });
+            document.querySelectorAll('.nav-tabs button').forEach(btn => btn.classList.remove('active'));
+            document.getElementById('tab-' + tabId).classList.remove('hidden');
+            event.target.classList.add('active');
+        }
+
+        // AI Assistant Suggestion Generator based on Category
+        function generateAISuggestions() {
+            const cat = document.getElementById('comp-category').value;
+            let tip = "Make sure to enter exact block and room details for faster resolution.";
+            if (cat.includes('Water')) tip = "AI Suggestion: Mention if the leakage is continuous or if main supply is blocked to speed up plumbing dispatch.";
+            else if (cat.includes('Electricity')) tip = "AI Suggestion: Note down the nearest switchboard number or MCB box location if possible.";
+            else if (cat.includes('Internet')) tip = "AI Suggestion: Mention whether it's Wi-Fi (LAN/SSID) or wired connection issue along with router indicator status.";
+            else if (cat.includes('Cleanliness')) tip = "AI Suggestion: Specify if extra garbage bins or immediate sweeping/sanitation staff is required.";
+            
+            document.getElementById('ai-suggestion-box').innerHTML = `💡 <b>AI Assistant Guidance:</b> ${tip}`;
+        }
+        window.onload = generateAISuggestions;
+
+        // Student Registration
+        function registerStudent() {
+            const name = document.getElementById('reg-name').value.trim();
+            const course = document.getElementById('reg-course').value.trim();
+            const mobile = document.getElementById('reg-mobile').value.trim();
+
+            if (!name || !course || !mobile) {
+                alert('Please fill out all registration fields.');
+                return;
+            }
+
+            let users = JSON.parse(localStorage.getItem('ltsu_users'));
+            const userId = 'LTSU-USER-' + (1001 + users.length);
+            const password = 'LTSU@' + Math.floor(1000 + Math.random() * 9000);
+
+            users.push({ userId, name, course, mobile, password, role: 'student' });
+            localStorage.setItem('ltsu_users', JSON.stringify(users));
+
+            document.getElementById('modal-cred-box').innerHTML = `
+                Account ID: <span style="color:var(--accent);">${userId}</span><br>
+                Password: <span style="color:var(--danger);">${password}</span><br>
+                Student Name: ${name}
+            `;
+            document.getElementById('credential-modal').classList.remove('hidden');
+        }
+
+        function closeCredentialModal() {
+            document.getElementById('credential-modal').classList.add('hidden');
+            switchAuthTab('student-login');
+        }
+
+        // Student Login
+        function loginStudent() {
+            const id = document.getElementById('login-id').value.trim();
+            const pass = document.getElementById('login-pass').value.trim();
+
+            let users = JSON.parse(localStorage.getItem('ltsu_users'));
+            let user = users.find(u => u.userId === id && u.password === pass);
+
+            if (user) {
+                currentUser = user;
+                startDashboard();
+            } else {
+                alert('Invalid Account ID or Password.');
+            }
+        }
+
+        // Staff Login (Admin & Super Admin with exact passwords requested)
+        function loginStaff() {
+            const username = document.getElementById('staff-user').value.trim();
+            const pass = document.getElementById('staff-pass').value.trim();
+
+            if (username.toLowerCase() === 'superadmin' && pass === 'Superadmin@LTSU2026') {
+                currentUser = { name: 'Super Administrator', role: 'super-admin' };
+                startDashboard();
+            } else if (username.toLowerCase() === 'admin' && pass === 'Admin@LTSU2026') {
+                currentUser = { name: 'Campus Administrator', role: 'admin' };
+                startDashboard();
+            } else {
+                alert('Invalid staff credentials. Please use correct Admin or Super Admin username and password.');
+            }
+        }
+
+        function startDashboard() {
+            document.getElementById('auth-screen').classList.add('hidden');
+            document.getElementById('user-info').classList.remove('hidden');
+            document.getElementById('welcome-msg').innerText = `${currentUser.name} (${currentUser.role.toUpperCase()})`;
+
+            if (currentUser.role === 'student') {
+                document.getElementById('student-dashboard').classList.remove('hidden');
+                loadStudentComplaints();
+            } else if (currentUser.role === 'admin') {
+                document.getElementById('admin-dashboard').classList.remove('hidden');
+                loadAdminComplaints();
+            } else if (currentUser.role === 'super-admin') {
+                document.getElementById('super-admin-dashboard').classList.remove('hidden');
