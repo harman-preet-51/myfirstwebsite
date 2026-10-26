@@ -1,110 +1,296 @@
+ठीक है, पूरा code फिर से दे रहा हूँ। इसमें कुछ बदला नहीं है, यह वही LTSUCare वाला frontend है।
+
+**अगला एक step:**
+
+1. नीचे के code box के ऊपरी कोने में **Copy** का निशान दबाइए। अगर वह न दिखे, तो code पर थोड़ी देर उँगली दबाकर पूरा select और copy कीजिए।
+2. GitHub के खाली code box में एक बार click कीजिए।
+3. **Ctrl + V** दबाइए।
+4. Paste होने के बाद उस page की फ़ोटो भेजिए। अभी commit मत कीजिए।
+
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>My First Website</title>
-  <style>
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #0f172a;
-      color: white;
-      line-height: 1.6;
-    }
-    header {
-      padding: 22px 8%;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-bottom: 1px solid #334155;
-    }
-    .logo { font-size: 21px; font-weight: bold; color: #67e8f9; }
-    nav a { color: white; text-decoration: none; margin-left: 18px; }
-    main { text-align: center; padding: 85px 20px 65px; }
-    .tag {
-      color: #67e8f9;
-      border: 1px solid #155e75;
-      padding: 7px 14px;
-      border-radius: 25px;
-      display: inline-block;
-    }
-    h1 { font-size: clamp(36px, 7vw, 65px); line-height: 1.12; }
-    h1 span { color: #67e8f9; }
-    .intro { color: #cbd5e1; max-width: 600px; margin: 20px auto 28px; }
-    .btn {
-      display: inline-block;
-      background: #06b6d4;
-      color: #082f49;
-      padding: 12px 22px;
-      border-radius: 8px;
-      text-decoration: none;
-      font-weight: bold;
-      margin: 6px;
-    }
-    .btn2 { background: transparent; color: white; border: 1px solid #64748b; }
-    section { padding: 30px 8% 65px; }
-    h2 { text-align: center; }
-    .cards { display: flex; flex-wrap: wrap; gap: 18px; justify-content: center; }
-    .card {
-      background: #1e293b;
-      border: 1px solid #334155;
-      border-radius: 14px;
-      padding: 24px;
-      flex: 1 1 220px;
-      max-width: 330px;
-    }
-    .card h3 { color: #67e8f9; }
-    .card p { color: #cbd5e1; }
-    footer { text-align: center; padding: 25px; color: #94a3b8; border-top: 1px solid #334155; }
-    @media(max-width: 480px) {
-      header { padding: 18px; }
-      nav a { margin-left: 8px; font-size: 13px; }
-      main { padding-top: 60px; }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LTSUCare Project</title>
+<style>
+  * { box-sizing: border-box; }
+  body { margin:0; font-family: Arial, sans-serif; background:#f4f7fb; color:#1e293b; line-height:1.6; }
+  header { background:#0f766e; color:#fff; padding:14px 6%; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; position:sticky; top:0; z-index:10; }
+  header h1 { margin:0; font-size:22px; }
+  nav a { color:#fff; text-decoration:none; margin-left:16px; font-size:15px; cursor:pointer; }
+  nav a:hover { text-decoration:underline; }
+  .hero { background:linear-gradient(135deg,#0f766e,#0ea5e9); color:#fff; padding:60px 6%; text-align:center; }
+  .hero h2 { font-size:34px; margin:0 0 10px; }
+  .hero p { max-width:700px; margin:0 auto 24px; font-size:17px; }
+  .btn { display:inline-block; background:#fff; color:#0f766e; border:none; padding:12px 22px; border-radius:8px; font-size:16px; font-weight:bold; cursor:pointer; margin:6px; }
+  .btn.dark { background:#0f766e; color:#fff; }
+  section { padding:40px 6%; }
+  section h3 { font-size:26px; margin-top:0; color:#0f766e; }
+  .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(230px,1fr)); gap:14px; }
+  .card { background:#fff; border-radius:10px; padding:16px; box-shadow:0 2px 8px rgba(0,0,0,.08); }
+  .card.click { cursor:pointer; }
+  .card.click:hover { border:2px solid #0f766e; padding:14px; }
+  .steps { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:14px; }
+  .step b { color:#0f766e; font-size:22px; }
+  label { display:block; margin-top:14px; font-weight:bold; }
+  input, select, textarea { width:100%; padding:10px; margin-top:5px; border:1px solid #cbd5e1; border-radius:6px; font-size:15px; font-family:inherit; }
+  textarea { min-height:100px; }
+  .err { color:#b91c1c; font-size:14px; margin-top:4px; display:none; }
+  .box { background:#fff; padding:22px; border-radius:10px; box-shadow:0 2px 8px rgba(0,0,0,.08); max-width:720px; }
+  .notice { background:#fef3c7; border-left:5px solid #f59e0b; padding:12px 16px; border-radius:6px; margin-bottom:18px; font-size:14px; }
+  .ok { background:#dcfce7; border-left:5px solid #16a34a; padding:14px; border-radius:6px; margin-top:16px; }
+  .hidden { display:none; }
+  .status span { display:inline-block; background:#e2e8f0; padding:4px 10px; border-radius:20px; margin:3px; font-size:13px; }
+  .status span.on { background:#0f766e; color:#fff; }
+  footer { background:#0f172a; color:#cbd5e1; text-align:center; padding:20px; font-size:14px; }
+</style>
 </head>
 <body>
-  <header>
-    <div class="logo">Harman.dev</div>
-    <nav>
-      <a href="#home">Home</a>
-      <a href="#about">About</a>
-    </nav>
-  </header>
 
-  <main id="home">
-    <span class="tag">My First Web Project</span>
-    <h1>Ideas into <span>Reality.</span></h1>
-    <p class="intro">
-      Welcome to my first website, created with HTML and CSS
-      and published using GitHub Pages.
-    </p>
-    <a class="btn" href="#about">Explore Project ↓</a>
-    <a class="btn btn2" href="https://github.com/">Visit GitHub</a>
-  </main>
+<header>
+  <h1>LTSUCare Project</h1>
+  <nav>
+    <a onclick="go('home')">Home</a>
+    <a onclick="go('report')">Report a Problem</a>
+    <a onclick="go('track')">Track My Report</a>
+    <a onclick="go('solution')">Find a Solution</a>
+    <a onclick="go('help')">Help</a>
+  </nav>
+</header>
 
-  <section id="about">
-    <h2>About This Project</h2>
-    <div class="cards">
-      <div class="card">
-        <h3>01. HTML</h3>
-        <p>HTML gives the website its structure and content.</p>
-      </div>
-      <div class="card">
-        <h3>02. CSS</h3>
-        <p>CSS adds colours, layout and a modern design.</p>
-      </div>
-      <div class="card">
-        <h3>03. GitHub Pages</h3>
-        <p>GitHub Pages can publish this website on the internet.</p>
-      </div>
+<div class="hero" id="home">
+  <h2>आपकी समस्या, हमारी ज़िम्मेदारी</h2>
+  <p>LTSUCare एक ऐसा platform है जहाँ आप अलग-अलग तरह की समस्याएँ report कर सकते हैं, guidance पा सकते हैं और अपनी report का status track कर सकते हैं।</p>
+  <button class="btn" onclick="go('report')">Report a Problem</button>
+  <button class="btn" onclick="go('track')">Track My Report</button>
+  <button class="btn" onclick="go('solution')">Find a Solution</button>
+</div>
+
+<section>
+  <h3>Problem Categories</h3>
+  <div class="grid" id="catGrid"></div>
+</section>
+
+<section style="background:#fff;">
+  <h3>How It Works</h3>
+  <div class="steps">
+    <div class="card step"><b>1</b><br>Problem चुनिए और details भरिए</div>
+    <div class="card step"><b>2</b><br>Submit से पहले details review कीजिए</div>
+    <div class="card step"><b>3</b><br>आपको एक unique Report ID मिलेगी</div>
+    <div class="card step"><b>4</b><br>ID से अपनी report का status track कीजिए</div>
+  </div>
+</section>
+
+<section id="report">
+  <h3>Report a Problem</h3>
+  <div class="box">
+    <div class="notice">यह अभी <b>demo version</b> है। Report सिर्फ आपके इसी browser में save होती है, किसी admin या दूसरे user को नहीं भेजी जाती।</div>
+    <div id="formArea">
+      <label>Problem Title *</label>
+      <input id="f_title" placeholder="जैसे: Hostel के बाहर पानी का रिसाव">
+      <div class="err" id="e_title">कृपया कम से कम 5 अक्षरों का title लिखिए।</div>
+
+      <label>Category *</label>
+      <select id="f_cat"></select>
+      <div class="err" id="e_cat">कृपया category चुनिए।</div>
+
+      <label>Description *</label>
+      <textarea id="f_desc" placeholder="समस्या के बारे में विस्तार से लिखिए"></textarea>
+      <div class="err" id="e_desc">कृपया कम से कम 20 अक्षरों में समस्या बताइए।</div>
+
+      <label>Location / Area *</label>
+      <input id="f_loc" placeholder="जैसे: Boys Hostel, Block B">
+      <div class="err" id="e_loc">कृपया location लिखिए।</div>
+
+      <label>समस्या कब से है?</label>
+      <input type="date" id="f_since">
+
+      <label>Priority</label>
+      <select id="f_pri">
+        <option>Low</option>
+        <option selected>Medium</option>
+        <option>High</option>
+        <option>Urgent</option>
+      </select>
+
+      <label>Contact (वैकल्पिक, आपकी अनुमति से)</label>
+      <input id="f_contact" placeholder="Phone या Email">
+
+      <label style="font-weight:normal;"><input type="checkbox" id="f_consent" style="width:auto;"> मैं अनुमति देता/देती हूँ कि मेरी contact details report के लिए इस्तेमाल हों।</label>
+
+      <button class="btn dark" onclick="reviewReport()">Review करें</button>
     </div>
-  </section>
 
-  <footer>
-    Created by Harman | My First Website · 2026
-  </footer>
+    <div id="reviewArea" class="hidden">
+      <h4>Submit से पहले जाँच लीजिए</h4>
+      <div id="reviewText"></div>
+      <button class="btn dark" onclick="submitReport()">Submit करें</button>
+      <button class="btn" style="background:#e2e8f0;" onclick="backEdit()">वापस edit करें</button>
+    </div>
+
+    <div id="doneArea" class="hidden ok"></div>
+  </div>
+</section>
+
+<section id="track" style="background:#fff;">
+  <h3>Track My Report</h3>
+  <div class="box">
+    <label>अपनी Report ID लिखिए</label>
+    <input id="t_id" placeholder="जैसे: LTSU-123456">
+    <button class="btn dark" onclick="trackReport()">Status देखें</button>
+    <div id="trackResult"></div>
+  </div>
+</section>
+
+<section id="solution">
+  <h3>Find a Solution</h3>
+  <div class="box">
+    <label>अपनी समस्या की category चुनिए</label>
+    <select id="s_cat" onchange="showSolution()"></select>
+    <div id="solResult" style="margin-top:16px;"></div>
+  </div>
+</section>
+
+<section id="help" style="background:#fff;">
+  <h3>Help, Contact और Safety</h3>
+  <div class="box">
+    <p><b>Emergency हो तो</b> (आग, चोट, जान का खतरा) तुरंत स्थानीय emergency number पर call कीजिए। इस website पर report करके इंतज़ार मत कीजिए।</p>
+    <p>अपनी personal जानकारी (password, OTP, bank details) कभी report में मत लिखिए।</p>
+    <p>Contact details बाद में यहाँ जोड़ी जाएँगी।</p>
+  </div>
+</section>
+
+<footer>© LTSUCare Project | Demo Version</footer>
+
+<script>
+var categories = [
+  {n:"Water, Leakage, Drainage और Waterlogging", tip:"Leakage दिखे तो मुख्य valve बंद करें, बिजली के पास पानी हो तो दूर रहें, और संबंधित water/maintenance department को बताएँ।"},
+  {n:"Cleaning, Garbage और Sanitation", tip:"कचरे की जगह की फोटो लें और सफाई विभाग या local municipal office को सूचना दें।"},
+  {n:"Electricity और Streetlights", tip:"खुले तार को कभी न छुएँ। खंभे या meter की खराबी की सूचना बिजली विभाग को दें।"},
+  {n:"Roads, Potholes और Public Infrastructure", tip:"खतरनाक जगह की फोटो और सही location के साथ PWD या नगर निगम को बताएँ।"},
+  {n:"Internet, Wi-Fi और Technical Problems", tip:"पहले router/device restart करें, फिर दूसरे device पर जाँचें। न चले तो IT/network team को बताएँ।"},
+  {n:"School, College, University और Hostel Problems", tip:"पहले संबंधित department, warden या student help desk से संपर्क करें।"},
+  {n:"Building Maintenance और Broken Facilities", tip:"टूटी चीज़ से दूर रहें, खतरे की जगह निशान लगाएँ और maintenance office को बताएँ।"},
+  {n:"Transport और Public Facilities", tip:"route, समय और vehicle/स्थान की जानकारी के साथ संबंधित transport office को बताएँ।"},
+  {n:"Environment और Pollution", tip:"प्रदूषण का स्रोत, जगह और समय नोट करें और pollution control/local authority को बताएँ।"},
+  {n:"Online Services और Digital Problems", tip:"Error का screenshot रखें, password किसी को न दें, और official support से संपर्क करें।"},
+  {n:"Customer Service और Service Complaints", tip:"Bill, order number या रसीद संभालकर रखें और पहले company के official support को लिखित में बताएँ।"},
+  {n:"Study, Career और General Guidance", tip:"अपना लक्ष्य और समस्या साफ लिखें। Teacher, mentor या career counsellor से सलाह लें।"},
+  {n:"Safety-related Concerns और Sensitive Complaints", tip:"तुरंत खतरा हो तो emergency number पर call करें। किसी भरोसेमंद व्यक्ति या अधिकारी को बताएँ।"},
+  {n:"Other Problems", tip:"अपनी समस्या विस्तार से लिखकर report करें, हम सही दिशा में भेजने की कोशिश करेंगे।"}
+];
+
+var stages = ["Submitted","Under Review","Assigned","In Progress","Waiting for Information","Resolved","Closed"];
+
+function go(id){ document.getElementById(id).scrollIntoView({behavior:"smooth"}); }
+
+function fillCategories(){
+  var grid = document.getElementById("catGrid");
+  var f = document.getElementById("f_cat");
+  var s = document.getElementById("s_cat");
+  f.innerHTML = '<option value="">-- चुनिए --</option>';
+  s.innerHTML = '<option value="">-- चुनिए --</option>';
+  for (var i=0;i<categories.length;i++){
+    var d = document.createElement("div");
+    d.className = "card click";
+    d.innerHTML = (i+1) + ". " + categories[i].n;
+    d.setAttribute("data-i", i);
+    d.onclick = function(){ document.getElementById("f_cat").value = this.getAttribute("data-i"); go("report"); };
+    grid.appendChild(d);
+    f.innerHTML += '<option value="'+i+'">'+categories[i].n+'</option>';
+    s.innerHTML += '<option value="'+i+'">'+categories[i].n+'</option>';
+  }
+}
+
+var pending = null;
+
+function show(id, on){ document.getElementById(id).style.display = on ? "block" : "none"; }
+
+function reviewReport(){
+  var title = document.getElementById("f_title").value.trim();
+  var cat = document.getElementById("f_cat").value;
+  var desc = document.getElementById("f_desc").value.trim();
+  var loc = document.getElementById("f_loc").value.trim();
+  var ok = true;
+  show("e_title", title.length < 5); if (title.length < 5) ok = false;
+  show("e_cat", cat === ""); if (cat === "") ok = false;
+  show("e_desc", desc.length < 20); if (desc.length < 20) ok = false;
+  show("e_loc", loc.length < 2); if (loc.length < 2) ok = false;
+  if (!ok) return;
+  var consent = document.getElementById("f_consent").checked;
+  var contact = document.getElementById("f_contact").value.trim();
+  pending = {
+    title:title, cat:categories[cat].n, desc:desc, loc:loc,
+    since:document.getElementById("f_since").value || "बताया नहीं",
+    pri:document.getElementById("f_pri").value,
+    contact:(consent && contact) ? contact : "नहीं दिया"
+  };
+  var t = document.getElementById("reviewText");
+  t.innerHTML = "";
+  var rows = [["Title",pending.title],["Category",pending.cat],["Description",pending.desc],["Location",pending.loc],["कब से",pending.since],["Priority",pending.pri],["Contact",pending.contact]];
+  for (var i=0;i<rows.length;i++){
+    var p = document.createElement("p");
+    var b = document.createElement("b");
+    b.textContent = rows[i][0] + ": ";
+    p.appendChild(b);
+    p.appendChild(document.createTextNode(rows[i][1]));
+    t.appendChild(p);
+  }
+  document.getElementById("formArea").classList.add("hidden");
+  document.getElementById("reviewArea").classList.remove("hidden");
+}
+
+function backEdit(){
+  document.getElementById("reviewArea").classList.add("hidden");
+  document.getElementById("formArea").classList.remove("hidden");
+}
+
+function submitReport(){
+  var id = "LTSU-" + Math.floor(100000 + Math.random()*900000);
+  pending.id = id;
+  pending.status = 0;
+  try {
+    var all = JSON.parse(localStorage.getItem("ltsu_reports") || "{}");
+    all[id] = pending;
+    localStorage.setItem("ltsu_reports", JSON.stringify(all));
+  } catch(e) {}
+  document.getElementById("reviewArea").classList.add("hidden");
+  var d = document.getElementById("doneArea");
+  d.classList.remove("hidden");
+  d.innerHTML = "<b>Report submit हो गई (demo)।</b><br>आपकी Report ID: <b style='font-size:20px;'>" + id + "</b><br>इसे सुरक्षित लिख लीजिए। Status देखने के लिए 'Track My Report' में यही ID डालिए।";
+}
+
+function trackReport(){
+  var id = document.getElementById("t_id").value.trim().toUpperCase();
+  var r = document.getElementById("trackResult");
+  var all = {};
+  try { all = JSON.parse(localStorage.getItem("ltsu_reports") || "{}"); } catch(e) {}
+  if (!all[id]){
+    r.innerHTML = "<p style='color:#b91c1c;'>यह ID इस browser में नहीं मिली। ID दोबारा जाँचिए। (Demo में सिर्फ इसी browser की reports दिखती हैं।)</p>";
+    return;
+  }
+  var rep = all[id];
+  var h = "<p><b>" + rep.title.replace(/</g,"&lt;") + "</b></p><div class='status'>";
+  for (var i=0;i<stages.length;i++){
+    h += "<span class='" + (i<=rep.status ? "on" : "") + "'>" + stages[i] + "</span>";
+  }
+  h += "</div>";
+  r.innerHTML = h;
+}
+
+function showSolution(){
+  var v = document.getElementById("s_cat").value;
+  var r = document.getElementById("solResult");
+  if (v === ""){ r.innerHTML = ""; return; }
+  r.innerHTML = "<div class='card'><b>सामान्य सलाह:</b><br>" + categories[v].tip + "<br><br><small>यह सिर्फ सामान्य guidance है। ज़रूरत हो तो सही department या professional से संपर्क करें।</small></div>";
+}
+
+fillCategories();
+</script>
 </body>
 </html>
+```
+
+AI assistant, असली database, login और admin dashboard अभी इसमें नहीं हैं। उन्हें हम इस frontend के live होने और test होने के बाद एक-एक करके जोड़ेंगे।
