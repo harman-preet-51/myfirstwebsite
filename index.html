@@ -1,418 +1,110 @@
-Ye lo, LTSUCare Project ka complete single prompt, seedha GitHub Copilot mein paste kar dena. Ismein student ke auto-generated Account ID aur password se lekar warning, complaint tracking, Admin, Super Admin aur security tak sab included hai.
-
-# LTSUCare Project — Complete Website Implementation Prompt
-
-I have an existing website named **LTSUCare Project** built using HTML, CSS and JavaScript. Inspect my existing project files and implement all the requirements below in the existing project.
-
-**Do not create a new repository or unnecessarily redesign my website.** Preserve my current frontend design, Hindi content, responsive layout, navigation, complaint categories, solution guides and Help section.
-
-I need complete, working code—not just a plan, UI design, demo or partial snippets.
-
-## 1. Three User Roles
-
-Implement three separate roles:
-
-1. User / Student
-2. Admin / Staff
-3. Super Admin
-
-Create separate dashboards and login interfaces where appropriate. Enforce all permissions on the backend, not only by hiding frontend buttons.
-
-## 2. Student Registration — No OTP, No Student-Created Password
-
-Do not implement OTP, SMS verification or SMS-provider integration. Students must not be required to create their own passwords.
-
-The first-time student registration form must ask for only these four details:
-
-- Student Name
-- Mobile Number
-- Course
-- Semester
-
-When the student submits the form:
-
-1. Validate the submitted details on the backend.
-2. Check whether the mobile number is already registered.
-3. If it is already registered, do not create a duplicate account. Direct the student to the existing-account login page.
-4. If it is a new registration, create the student account in the database.
-5. Automatically generate a unique, permanent Account ID on the backend.
-6. Automatically generate a strong, random password using a cryptographically secure random generator.
-7. Save the Account ID and student details permanently in the database.
-8. Store only a secure password hash, never the original password.
-9. Display the Account ID and generated password immediately after successful registration.
-
-The Account ID must be unique and must never change during ordinary logins or password resets. Enforce uniqueness through database constraints.
-
-Do not generate official Account IDs or passwords using insecure frontend JavaScript.
-
-## 3. One-Time Credential Display and Warning
-
-Immediately after successful registration, display both the student's Account ID and automatically generated password.
-
-Show this prominent warning directly below the credentials:
-
-**⚠️ IMPORTANT: SAVE YOUR LOGIN CREDENTIALS CAREFULLY!**
-
-Your Unique Account ID and automatically generated password will be displayed only once, immediately after successful registration.
-
-Please write down your Account ID and password or take a screenshot and save it in a safe place.
-
-If you forget your password, only the Super Admin can reset or change it. Your old password cannot be recovered.
-
-Do not share your login credentials with anyone. Keep them safe to protect your account and complaints.
-
-**Remember: Your Account ID remains the same, even if the Super Admin resets your password.**
-
-Requirements:
-
-- Show the generated password in plain text only on the initial successful registration screen.
-- Never store or log the original password in plain text.
-- Never show the old password again after the registration screen is closed.
-- Do not put passwords in URLs, browser storage, analytics or application logs.
-- Allow the student to copy or save the credentials during the initial display.
-- If the student leaves the page without saving the credentials, do not silently generate another account. Direct them to the existing-account login or Super Admin-assisted password-reset process.
-- Make the warning readable on mobile and desktop.
-
-## 4. Student Login — Account ID and Password
-
-On the main website, provide a clearly visible option:
-
-**Student Login — Login with Unique ID**
-
-The login form must contain only:
-
-- Unique Account ID
-- Password
-
-When the student submits the form:
-
-1. Verify the credentials on the backend.
-2. If they are correct, open the student's existing dashboard.
-3. If they are incorrect, show a clear error message.
-4. Never create a new account during login.
-5. Never generate a new Account ID during login.
-6. Load the student's saved details and previous complaints from the database.
-
-Provide secure sessions, logout and session expiration. Do not require OTP.
-
-## 5. Password Reset by Super Admin Only
-
-If a student forgets their password:
-
-- The student must contact or request assistance from the Super Admin.
-- Only an authorized Super Admin can reset the student's password.
-- The Super Admin must not be able to view or recover the old password.
-- Generate a new secure password or use another secure reset procedure.
-- Display any newly generated password only through a controlled, one-time process.
-- Record the reset action in the audit log.
-- Keep the student's original Account ID and complaints unchanged.
-- Do not allow a password reset simply because someone knows a student's Account ID or mobile number.
-
-Admin must not have permission to reset student passwords unless the Super Admin explicitly authorizes such a permission.
-
-## 6. Student Dashboard
-
-After successful registration or login, show:
-
-- Student Name
-- Mobile Number
-- Course
-- Semester
-- Permanent Account ID
-- Submit New Complaint
-- My Complaints
-- Track My Complaint
-- Complaint IDs and current statuses
-- Complaint history and latest updates
-- Logout
-
-Fetch all information from the backend database. Never use hardcoded sample data as the official account or complaint records.
-
-Students must only be able to access their own complaints.
-
-## 7. Complaint Submission
-
-Connect the existing Report a Problem form to a real backend and database.
-
-Preserve the existing useful fields:
-
-- Problem Title
-- Problem Category
-- Problem Description
-- Location / Area
-- Date the problem started
-- Priority
-- Optional Contact Information, where appropriate
-- Contact consent checkbox, where applicable
-
-Associate every complaint with the authenticated student's account on the backend. Never trust an Account ID submitted by the browser without verifying the authenticated session.
-
-Keep all 14 existing categories:
-
-1. Water, Leakage, Drainage and Waterlogging
-2. Cleaning, Garbage and Sanitation
-3. Electricity and Streetlights
-4. Roads, Potholes and Public Infrastructure
-5. Internet, Wi-Fi and Technical Problems
-6. School, College, University and Hostel Problems
-7. Building Maintenance and Broken Facilities
-8. Transport and Public Facilities
-9. Environment and Pollution
-10. Online Services and Digital Problems
-11. Customer Service and Service Complaints
-12. Study, Career and General Guidance
-13. Safety-related Concerns and Sensitive Complaints
-14. Other Problems
-
-Preserve the existing category-specific solution guidance.
-
-## 8. Automatic Complaint ID
-
-When a complaint is successfully submitted:
-
-1. Validate the request on the backend.
-2. Verify the student's authenticated session.
-3. Generate a unique Complaint ID on the backend.
-4. Save the complaint and its initial status in the database.
-5. Save the submission timestamp.
-6. Show the Complaint ID only after successful database saving.
-
-Every complaint must have its own permanent Complaint ID. Refreshing the page or logging out must not change it.
-
-Use database constraints to prevent duplicate IDs. Handle failed submissions correctly and prevent accidental duplicate submissions where possible.
-
-Do not generate official Complaint IDs using frontend `Math.random()`.
-
-## 9. Complaint Tracking System
-
-Connect the existing Track My Report section to the backend.
-
-Students must be able to see their own complaints and track their progress.
-
-Display:
-
-- Complaint ID
-- Problem title
-- Category
-- Location
-- Submission date
-- Current status
-- Assigned staff member, where appropriate
-- Latest update
-- Relevant work notes or solution
-- Status history with timestamps
-
-Use these statuses:
-
-1. Submitted
-2. Under Review
-3. Assigned
-4. In Progress
-5. Waiting for Information
-6. Resolved
-7. Closed
-
-Save every status change permanently, including the previous status, new status, timestamp, responsible staff member and relevant note.
-
-Students must not be able to access another student's private complaint merely by guessing or entering its Complaint ID.
-
-## 10. Admin Login and Dashboard
-
-Create a separate Admin Login page. Admin accounts must be created and managed by the Super Admin.
-
-Admin must log in using their assigned username and password. Do not use student registration for staff accounts.
-
-**Important: Admin must be able to view ALL complaints submitted by ALL students, not just assigned complaints.**
-
-The Admin dashboard must show:
-
-- All complaints
-- Total complaint count
-- Status-wise complaint counts
-- Complaint ID
-- Student Account ID
-- Problem title and category
-- Description and location
-- Priority and submission date
-- Current status
-- Assigned staff member
-- Latest work notes
-- Complaint history
-
-Provide search and filters by Complaint ID, category, status, date and assigned staff member.
-
-Admin can:
-
-- Open any complaint.
-- Update its status.
-- Add work notes and solution details.
-- Request additional information.
-- Mark work as resolved when appropriate.
-- View complaint history.
-- Escalate complaints to the Super Admin.
-
-Admin cannot create or promote Super Admins, change their own role, delete official complaints or access Super Admin-only staff-management functions.
-
-## 11. Super Admin Login and Dashboard
-
-Create a separate Super Admin Login page and dashboard.
-
-The first Super Admin must be created through a secure setup process. Do not hardcode production credentials or allow public Super Admin registration.
-
-**Super Admin must also be able to view ALL complaints submitted by ALL students.**
-
-Super Admin can:
-
-- View, search and filter all complaints.
-- Create, activate, deactivate and manage Admin accounts.
-- Assign and reassign complaints.
-- Update complaint status and official notes.
-- Reset student passwords through a secure process.
-- Monitor complaint progress and resolutions.
-- View staff activity and audit logs.
-- Archive duplicate, abusive or test complaints with confirmation and a recorded reason.
-- See who performed important actions and when.
-
-Prefer archiving over permanent deletion. Preserve audit records even when a complaint is archived.
-
-Deactivated staff must lose access to privileged functions, including through existing sessions once revocation takes effect.
-
-## 12. Backend and Database
-
-Implement a real backend using Node.js and Express, with PostgreSQL or another suitable persistent database.
-
-Create appropriate tables or models for:
-
-- Student accounts
-- Admin and Super Admin accounts
-- Roles and permissions
-- Complaints
-- Complaint assignments
-- Complaint status history
-- Audit logs
-- Sessions, where required
-
-Create functional backend endpoints for:
-
-- Student registration
-- Student login using Account ID and password
-- Logout
-- Student profile and dashboard
-- Complaint submission
-- Student's own complaints
-- Complaint tracking
-- Admin login and dashboard
-- All-complaint listing for Admin
-- Complaint status updates
-- Super Admin login and dashboard
-- Staff account management
-- Password resets
-- Complaint assignment and reassignment
-- Audit log access
-
-The database must be the source of truth. Do not use browser `localStorage` as the official account database, complaint database or authentication system.
-
-Data must persist after refresh, browser closure, logout and login from another authorized device.
-
-## 13. Security Requirements
-
-Implement:
-
-- Strong password hashing.
-- Server-side authentication and role-based authorization.
-- Secure session handling and logout.
-- Appropriate secure cookie settings.
-- Login rate limiting and protection against brute-force attempts.
-- Server-side input validation.
-- Safe parameterized database queries or a suitable ORM.
-- Protection against SQL injection and XSS.
-- CSRF protection where applicable.
-- Appropriate CORS configuration.
-- HTTPS in production.
-- Environment variables for secrets and database credentials.
-- Safe error messages.
-- Database backup and recovery instructions.
-- Audit logs for sensitive administrative actions.
-
-Test that:
-
-- Students can only access their own complaints.
-- Admins can see all complaints but cannot access Super Admin-only management functions.
-- Super Admins can see all complaints and manage staff.
-- Users cannot change their roles by editing browser data.
-- Deactivated staff lose privileged access.
-- Duplicate accounts and IDs are rejected safely.
-
-Do not claim the system is fully secure until the implementation has been tested.
-
-## 14. Preserve My Existing Frontend
-
-Keep these existing sections and useful features:
-
-- Home
-- Report a Problem
-- Track My Report
-- Find a Solution
-- Help
-- All 14 complaint categories
-- How It Works
-- Existing Hindi content and responsive design
-
-Add student registration, the one-time credential display and warning, Student Login, Admin Login, Super Admin Login and their respective dashboards.
-
-Connect every important form and button to working backend functionality.
-
-## 15. Implementation Order
-
-Implement the project in this order:
-
-**Part 1 — Authentication and Accounts**
-- Backend and database setup
-- Student registration
-- Automatically generated Account ID and password
-- One-time credential display and warning
-- Login using Account ID and password
-- Student details
-- Separate Admin and Super Admin login
-- Secure sessions and role permissions
-
-**Part 2 — Complaint Submission and Tracking**
-- Complaint form connected to the backend
-- Automatic Complaint ID
-- Permanent database storage
-- Student dashboard and complaint history
-- Complaint tracking
-- Status updates and timestamps
-
-**Part 3 — Admin, Super Admin and Security**
-- Both Admin and Super Admin can view all complaints
-- Staff account management
-- Password reset by Super Admin
-- Complaint assignment and reassignment
-- Status updates and resolution notes
-- Audit logs and controlled complaint archiving
-- Security and authorization tests
-
-Do not implement OTP or SMS functionality. Do not add unrelated extra features before these parts are working.
-
-## 16. Complete Code and Setup Instructions
-
-First inspect my existing project files, then implement the required changes.
-
-Provide:
-
-- Complete code for every modified or new file
-- Exact file paths
-- Database schema and setup instructions
-- A safe `.env.example` without real secrets
-- `.gitignore` rules to protect credentials
-- Exact installation and startup commands
-- Instructions for securely creating the first Super Admin
-- Instructions for running and deploying the frontend, backend and database
-- Tests for registration, one-time credential display, login, password reset, duplicate IDs, complaint submission, tracking and role permissions
-
-Do not stop after giving a plan. Do not leave core features as TODO comments. Do not provide fake authentication, sample-only complaints or non-functional buttons.
-
-**Hosting note:** GitHub Pages can host the static frontend but cannot run the Node.js backend by itself. Host the backend and database separately and configure the frontend to connect to them. Never put private keys or database credentials in the public repository.
-
-Start by inspecting my existing project and implement these requirements in the existing codebase without unnecessarily redesigning the website.
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My First Website</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #0f172a;
+      color: white;
+      line-height: 1.6;
+    }
+    header {
+      padding: 22px 8%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #334155;
+    }
+    .logo { font-size: 21px; font-weight: bold; color: #67e8f9; }
+    nav a { color: white; text-decoration: none; margin-left: 18px; }
+    main { text-align: center; padding: 85px 20px 65px; }
+    .tag {
+      color: #67e8f9;
+      border: 1px solid #155e75;
+      padding: 7px 14px;
+      border-radius: 25px;
+      display: inline-block;
+    }
+    h1 { font-size: clamp(36px, 7vw, 65px); line-height: 1.12; }
+    h1 span { color: #67e8f9; }
+    .intro { color: #cbd5e1; max-width: 600px; margin: 20px auto 28px; }
+    .btn {
+      display: inline-block;
+      background: #06b6d4;
+      color: #082f49;
+      padding: 12px 22px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: bold;
+      margin: 6px;
+    }
+    .btn2 { background: transparent; color: white; border: 1px solid #64748b; }
+    section { padding: 30px 8% 65px; }
+    h2 { text-align: center; }
+    .cards { display: flex; flex-wrap: wrap; gap: 18px; justify-content: center; }
+    .card {
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 14px;
+      padding: 24px;
+      flex: 1 1 220px;
+      max-width: 330px;
+    }
+    .card h3 { color: #67e8f9; }
+    .card p { color: #cbd5e1; }
+    footer { text-align: center; padding: 25px; color: #94a3b8; border-top: 1px solid #334155; }
+    @media(max-width: 480px) {
+      header { padding: 18px; }
+      nav a { margin-left: 8px; font-size: 13px; }
+      main { padding-top: 60px; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">Harman.dev</div>
+    <nav>
+      <a href="#home">Home</a>
+      <a href="#about">About</a>
+    </nav>
+  </header>
+
+  <main id="home">
+    <span class="tag">My First Web Project</span>
+    <h1>Ideas into <span>Reality.</span></h1>
+    <p class="intro">
+      Welcome to my first website, created with HTML and CSS
+      and published using GitHub Pages.
+    </p>
+    <a class="btn" href="#about">Explore Project ↓</a>
+    <a class="btn btn2" href="https://github.com/">Visit GitHub</a>
+  </main>
+
+  <section id="about">
+    <h2>About This Project</h2>
+    <div class="cards">
+      <div class="card">
+        <h3>01. HTML</h3>
+        <p>HTML gives the website its structure and content.</p>
+      </div>
+      <div class="card">
+        <h3>02. CSS</h3>
+        <p>CSS adds colours, layout and a modern design.</p>
+      </div>
+      <div class="card">
+        <h3>03. GitHub Pages</h3>
+        <p>GitHub Pages can publish this website on the internet.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    Created by Harman | My First Website · 2026
+  </footer>
+</body>
+</html>
