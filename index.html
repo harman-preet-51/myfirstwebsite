@@ -1,286 +1,418 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>LTSUCare Project</title>
-<style>
-  * { box-sizing: border-box; }
-  body { margin:0; font-family: Arial, sans-serif; background:#f4f7fb; color:#1e293b; line-height:1.6; }
-  header { background:#0f766e; color:#fff; padding:14px 6%; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; position:sticky; top:0; z-index:10; }
-  header h1 { margin:0; font-size:22px; }
-  nav a { color:#fff; text-decoration:none; margin-left:16px; font-size:15px; cursor:pointer; }
-  nav a:hover { text-decoration:underline; }
-  .hero { background:linear-gradient(135deg,#0f766e,#0ea5e9); color:#fff; padding:60px 6%; text-align:center; }
-  .hero h2 { font-size:34px; margin:0 0 10px; }
-  .hero p { max-width:700px; margin:0 auto 24px; font-size:17px; }
-  .btn { display:inline-block; background:#fff; color:#0f766e; border:none; padding:12px 22px; border-radius:8px; font-size:16px; font-weight:bold; cursor:pointer; margin:6px; }
-  .btn.dark { background:#0f766e; color:#fff; }
-  section { padding:40px 6%; }
-  section h3 { font-size:26px; margin-top:0; color:#0f766e; }
-  .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(230px,1fr)); gap:14px; }
-  .card { background:#fff; border-radius:10px; padding:16px; box-shadow:0 2px 8px rgba(0,0,0,.08); }
-  .card.click { cursor:pointer; }
-  .card.click:hover { border:2px solid #0f766e; padding:14px; }
-  .steps { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:14px; }
-  .step b { color:#0f766e; font-size:22px; }
-  label { display:block; margin-top:14px; font-weight:bold; }
-  input, select, textarea { width:100%; padding:10px; margin-top:5px; border:1px solid #cbd5e1; border-radius:6px; font-size:15px; font-family:inherit; }
-  textarea { min-height:100px; }
-  .err { color:#b91c1c; font-size:14px; margin-top:4px; display:none; }
-  .box { background:#fff; padding:22px; border-radius:10px; box-shadow:0 2px 8px rgba(0,0,0,.08); max-width:720px; }
-  .notice { background:#fef3c7; border-left:5px solid #f59e0b; padding:12px 16px; border-radius:6px; margin-bottom:18px; font-size:14px; }
-  .ok { background:#dcfce7; border-left:5px solid #16a34a; padding:14px; border-radius:6px; margin-top:16px; }
-  .hidden { display:none; }
-  .status span { display:inline-block; background:#e2e8f0; padding:4px 10px; border-radius:20px; margin:3px; font-size:13px; }
-  .status span.on { background:#0f766e; color:#fff; }
-  footer { background:#0f172a; color:#cbd5e1; text-align:center; padding:20px; font-size:14px; }
-</style>
-</head>
-<body>
+Ye lo, LTSUCare Project ka complete single prompt, seedha GitHub Copilot mein paste kar dena. Ismein student ke auto-generated Account ID aur password se lekar warning, complaint tracking, Admin, Super Admin aur security tak sab included hai.
 
-<header>
-  <h1>LTSUCare Project</h1>
-  <nav>
-    <a onclick="go('home')">Home</a>
-    <a onclick="go('report')">Report a Problem</a>
-    <a onclick="go('track')">Track My Report</a>
-    <a onclick="go('solution')">Find a Solution</a>
-    <a onclick="go('help')">Help</a>
-  </nav>
-</header>
+# LTSUCare Project — Complete Website Implementation Prompt
 
-<div class="hero" id="home">
-  <h2>आपकी समस्या, हमारी ज़िम्मेदारी</h2>
-  <p>LTSUCare एक ऐसा platform है जहाँ आप अलग-अलग तरह की समस्याएँ report कर सकते हैं, guidance पा सकते हैं और अपनी report का status track कर सकते हैं।</p>
-  <button class="btn" onclick="go('report')">Report a Problem</button>
-  <button class="btn" onclick="go('track')">Track My Report</button>
-  <button class="btn" onclick="go('solution')">Find a Solution</button>
-</div>
+I have an existing website named **LTSUCare Project** built using HTML, CSS and JavaScript. Inspect my existing project files and implement all the requirements below in the existing project.
 
-<section>
-  <h3>Problem Categories</h3>
-  <div class="grid" id="catGrid"></div>
-</section>
+**Do not create a new repository or unnecessarily redesign my website.** Preserve my current frontend design, Hindi content, responsive layout, navigation, complaint categories, solution guides and Help section.
 
-<section style="background:#fff;">
-  <h3>How It Works</h3>
-  <div class="steps">
-    <div class="card step"><b>1</b><br>Problem चुनिए और details भरिए</div>
-    <div class="card step"><b>2</b><br>Submit से पहले details review कीजिए</div>
-    <div class="card step"><b>3</b><br>आपको एक unique Report ID मिलेगी</div>
-    <div class="card step"><b>4</b><br>ID से अपनी report का status track कीजिए</div>
-  </div>
-</section>
+I need complete, working code—not just a plan, UI design, demo or partial snippets.
 
-<section id="report">
-  <h3>Report a Problem</h3>
-  <div class="box">
-    <div class="notice">यह अभी <b>demo version</b> है। Report सिर्फ आपके इसी browser में save होती है, किसी admin या दूसरे user को नहीं भेजी जाती।</div>
-    <div id="formArea">
-      <label>Problem Title *</label>
-      <input id="f_title" placeholder="जैसे: Hostel के बाहर पानी का रिसाव">
-      <div class="err" id="e_title">कृपया कम से कम 5 अक्षरों का title लिखिए।</div>
+## 1. Three User Roles
 
-      <label>Category *</label>
-      <select id="f_cat"></select>
-      <div class="err" id="e_cat">कृपया category चुनिए।</div>
+Implement three separate roles:
 
-      <label>Description *</label>
-      <textarea id="f_desc" placeholder="समस्या के बारे में विस्तार से लिखिए"></textarea>
-      <div class="err" id="e_desc">कृपया कम से कम 20 अक्षरों में समस्या बताइए।</div>
+1. User / Student
+2. Admin / Staff
+3. Super Admin
 
-      <label>Location / Area *</label>
-      <input id="f_loc" placeholder="जैसे: Boys Hostel, Block B">
-      <div class="err" id="e_loc">कृपया location लिखिए।</div>
+Create separate dashboards and login interfaces where appropriate. Enforce all permissions on the backend, not only by hiding frontend buttons.
 
-      <label>समस्या कब से है?</label>
-      <input type="date" id="f_since">
+## 2. Student Registration — No OTP, No Student-Created Password
 
-      <label>Priority</label>
-      <select id="f_pri">
-        <option>Low</option>
-        <option selected>Medium</option>
-        <option>High</option>
-        <option>Urgent</option>
-      </select>
+Do not implement OTP, SMS verification or SMS-provider integration. Students must not be required to create their own passwords.
 
-      <label>Contact (वैकल्पिक, आपकी अनुमति से)</label>
-      <input id="f_contact" placeholder="Phone या Email">
+The first-time student registration form must ask for only these four details:
 
-      <label style="font-weight:normal;"><input type="checkbox" id="f_consent" style="width:auto;"> मैं अनुमति देता/देती हूँ कि मेरी contact details report के लिए इस्तेमाल हों।</label>
+- Student Name
+- Mobile Number
+- Course
+- Semester
 
-      <button class="btn dark" onclick="reviewReport()">Review करें</button>
-    </div>
+When the student submits the form:
 
-    <div id="reviewArea" class="hidden">
-      <h4>Submit से पहले जाँच लीजिए</h4>
-      <div id="reviewText"></div>
-      <button class="btn dark" onclick="submitReport()">Submit करें</button>
-      <button class="btn" style="background:#e2e8f0;" onclick="backEdit()">वापस edit करें</button>
-    </div>
+1. Validate the submitted details on the backend.
+2. Check whether the mobile number is already registered.
+3. If it is already registered, do not create a duplicate account. Direct the student to the existing-account login page.
+4. If it is a new registration, create the student account in the database.
+5. Automatically generate a unique, permanent Account ID on the backend.
+6. Automatically generate a strong, random password using a cryptographically secure random generator.
+7. Save the Account ID and student details permanently in the database.
+8. Store only a secure password hash, never the original password.
+9. Display the Account ID and generated password immediately after successful registration.
 
-    <div id="doneArea" class="hidden ok"></div>
-  </div>
-</section>
+The Account ID must be unique and must never change during ordinary logins or password resets. Enforce uniqueness through database constraints.
 
-<section id="track" style="background:#fff;">
-  <h3>Track My Report</h3>
-  <div class="box">
-    <label>अपनी Report ID लिखिए</label>
-    <input id="t_id" placeholder="जैसे: LTSU-123456">
-    <button class="btn dark" onclick="trackReport()">Status देखें</button>
-    <div id="trackResult"></div>
-  </div>
-</section>
+Do not generate official Account IDs or passwords using insecure frontend JavaScript.
 
-<section id="solution">
-  <h3>Find a Solution</h3>
-  <div class="box">
-    <label>अपनी समस्या की category चुनिए</label>
-    <select id="s_cat" onchange="showSolution()"></select>
-    <div id="solResult" style="margin-top:16px;"></div>
-  </div>
-</section>
+## 3. One-Time Credential Display and Warning
 
-<section id="help" style="background:#fff;">
-  <h3>Help, Contact और Safety</h3>
-  <div class="box">
-    <p><b>Emergency हो तो</b> (आग, चोट, जान का खतरा) तुरंत स्थानीय emergency number पर call कीजिए। इस website पर report करके इंतज़ार मत कीजिए।</p>
-    <p>अपनी personal जानकारी (password, OTP, bank details) कभी report में मत लिखिए।</p>
-    <p>Contact details बाद में यहाँ जोड़ी जाएँगी।</p>
-  </div>
-</section>
+Immediately after successful registration, display both the student's Account ID and automatically generated password.
 
-<footer>© LTSUCare Project | Demo Version</footer>
+Show this prominent warning directly below the credentials:
 
-<script>
-var categories = [
-  {n:"Water, Leakage, Drainage और Waterlogging", tip:"Leakage दिखे तो मुख्य valve बंद करें, बिजली के पास पानी हो तो दूर रहें, और संबंधित water/maintenance department को बताएँ।"},
-  {n:"Cleaning, Garbage और Sanitation", tip:"कचरे की जगह की फोटो लें और सफाई विभाग या local municipal office को सूचना दें।"},
-  {n:"Electricity और Streetlights", tip:"खुले तार को कभी न छुएँ। खंभे या meter की खराबी की सूचना बिजली विभाग को दें।"},
-  {n:"Roads, Potholes और Public Infrastructure", tip:"खतरनाक जगह की फोटो और सही location के साथ PWD या नगर निगम को बताएँ।"},
-  {n:"Internet, Wi-Fi और Technical Problems", tip:"पहले router/device restart करें, फिर दूसरे device पर जाँचें। न चले तो IT/network team को बताएँ।"},
-  {n:"School, College, University और Hostel Problems", tip:"पहले संबंधित department, warden या student help desk से संपर्क करें।"},
-  {n:"Building Maintenance और Broken Facilities", tip:"टूटी चीज़ से दूर रहें, खतरे की जगह निशान लगाएँ और maintenance office को बताएँ।"},
-  {n:"Transport और Public Facilities", tip:"route, समय और vehicle/स्थान की जानकारी के साथ संबंधित transport office को बताएँ।"},
-  {n:"Environment और Pollution", tip:"प्रदूषण का स्रोत, जगह और समय नोट करें और pollution control/local authority को बताएँ।"},
-  {n:"Online Services और Digital Problems", tip:"Error का screenshot रखें, password किसी को न दें, और official support से संपर्क करें।"},
-  {n:"Customer Service और Service Complaints", tip:"Bill, order number या रसीद संभालकर रखें और पहले company के official support को लिखित में बताएँ।"},
-  {n:"Study, Career और General Guidance", tip:"अपना लक्ष्य और समस्या साफ लिखें। Teacher, mentor या career counsellor से सलाह लें।"},
-  {n:"Safety-related Concerns और Sensitive Complaints", tip:"तुरंत खतरा हो तो emergency number पर call करें। किसी भरोसेमंद व्यक्ति या अधिकारी को बताएँ।"},
-  {n:"Other Problems", tip:"अपनी समस्या विस्तार से लिखकर report करें, हम सही दिशा में भेजने की कोशिश करेंगे।"}
-];
+**⚠️ IMPORTANT: SAVE YOUR LOGIN CREDENTIALS CAREFULLY!**
 
-var stages = ["Submitted","Under Review","Assigned","In Progress","Waiting for Information","Resolved","Closed"];
+Your Unique Account ID and automatically generated password will be displayed only once, immediately after successful registration.
 
-function go(id){ document.getElementById(id).scrollIntoView({behavior:"smooth"}); }
+Please write down your Account ID and password or take a screenshot and save it in a safe place.
 
-function fillCategories(){
-  var grid = document.getElementById("catGrid");
-  var f = document.getElementById("f_cat");
-  var s = document.getElementById("s_cat");
-  f.innerHTML = '<option value="">-- चुनिए --</option>';
-  s.innerHTML = '<option value="">-- चुनिए --</option>';
-  for (var i=0;i<categories.length;i++){
-    var d = document.createElement("div");
-    d.className = "card click";
-    d.innerHTML = (i+1) + ". " + categories[i].n;
-    d.setAttribute("data-i", i);
-    d.onclick = function(){ document.getElementById("f_cat").value = this.getAttribute("data-i"); go("report"); };
-    grid.appendChild(d);
-    f.innerHTML += '<option value="'+i+'">'+categories[i].n+'</option>';
-    s.innerHTML += '<option value="'+i+'">'+categories[i].n+'</option>';
-  }
-}
+If you forget your password, only the Super Admin can reset or change it. Your old password cannot be recovered.
 
-var pending = null;
+Do not share your login credentials with anyone. Keep them safe to protect your account and complaints.
 
-function show(id, on){ document.getElementById(id).style.display = on ? "block" : "none"; }
+**Remember: Your Account ID remains the same, even if the Super Admin resets your password.**
 
-function reviewReport(){
-  var title = document.getElementById("f_title").value.trim();
-  var cat = document.getElementById("f_cat").value;
-  var desc = document.getElementById("f_desc").value.trim();
-  var loc = document.getElementById("f_loc").value.trim();
-  var ok = true;
-  show("e_title", title.length < 5); if (title.length < 5) ok = false;
-  show("e_cat", cat === ""); if (cat === "") ok = false;
-  show("e_desc", desc.length < 20); if (desc.length < 20) ok = false;
-  show("e_loc", loc.length < 2); if (loc.length < 2) ok = false;
-  if (!ok) return;
-  var consent = document.getElementById("f_consent").checked;
-  var contact = document.getElementById("f_contact").value.trim();
-  pending = {
-    title:title, cat:categories[cat].n, desc:desc, loc:loc,
-    since:document.getElementById("f_since").value || "बताया नहीं",
-    pri:document.getElementById("f_pri").value,
-    contact:(consent && contact) ? contact : "नहीं दिया"
-  };
-  var t = document.getElementById("reviewText");
-  t.innerHTML = "";
-  var rows = [["Title",pending.title],["Category",pending.cat],["Description",pending.desc],["Location",pending.loc],["कब से",pending.since],["Priority",pending.pri],["Contact",pending.contact]];
-  for (var i=0;i<rows.length;i++){
-    var p = document.createElement("p");
-    var b = document.createElement("b");
-    b.textContent = rows[i][0] + ": ";
-    p.appendChild(b);
-    p.appendChild(document.createTextNode(rows[i][1]));
-    t.appendChild(p);
-  }
-  document.getElementById("formArea").classList.add("hidden");
-  document.getElementById("reviewArea").classList.remove("hidden");
-}
+Requirements:
 
-function backEdit(){
-  document.getElementById("reviewArea").classList.add("hidden");
-  document.getElementById("formArea").classList.remove("hidden");
-}
+- Show the generated password in plain text only on the initial successful registration screen.
+- Never store or log the original password in plain text.
+- Never show the old password again after the registration screen is closed.
+- Do not put passwords in URLs, browser storage, analytics or application logs.
+- Allow the student to copy or save the credentials during the initial display.
+- If the student leaves the page without saving the credentials, do not silently generate another account. Direct them to the existing-account login or Super Admin-assisted password-reset process.
+- Make the warning readable on mobile and desktop.
 
-function submitReport(){
-  var id = "LTSU-" + Math.floor(100000 + Math.random()*900000);
-  pending.id = id;
-  pending.status = 0;
-  try {
-    var all = JSON.parse(localStorage.getItem("ltsu_reports") || "{}");
-    all[id] = pending;
-    localStorage.setItem("ltsu_reports", JSON.stringify(all));
-  } catch(e) {}
-  document.getElementById("reviewArea").classList.add("hidden");
-  var d = document.getElementById("doneArea");
-  d.classList.remove("hidden");
-  d.innerHTML = "<b>Report submit हो गई (demo)।</b><br>आपकी Report ID: <b style='font-size:20px;'>" + id + "</b><br>इसे सुरक्षित लिख लीजिए। Status देखने के लिए 'Track My Report' में यही ID डालिए।";
-}
+## 4. Student Login — Account ID and Password
 
-function trackReport(){
-  var id = document.getElementById("t_id").value.trim().toUpperCase();
-  var r = document.getElementById("trackResult");
-  var all = {};
-  try { all = JSON.parse(localStorage.getItem("ltsu_reports") || "{}"); } catch(e) {}
-  if (!all[id]){
-    r.innerHTML = "<p style='color:#b91c1c;'>यह ID इस browser में नहीं मिली। ID दोबारा जाँचिए। (Demo में सिर्फ इसी browser की reports दिखती हैं।)</p>";
-    return;
-  }
-  var rep = all[id];
-  var h = "<p><b>" + rep.title.replace(/</g,"&lt;") + "</b></p><div class='status'>";
-  for (var i=0;i<stages.length;i++){
-    h += "<span class='" + (i<=rep.status ? "on" : "") + "'>" + stages[i] + "</span>";
-  }
-  h += "</div>";
-  r.innerHTML = h;
-}
+On the main website, provide a clearly visible option:
 
-function showSolution(){
-  var v = document.getElementById("s_cat").value;
-  var r = document.getElementById("solResult");
-  if (v === ""){ r.innerHTML = ""; return; }
-  r.innerHTML = "<div class='card'><b>सामान्य सलाह:</b><br>" + categories[v].tip + "<br><br><small>यह सिर्फ सामान्य guidance है। ज़रूरत हो तो सही department या professional से संपर्क करें।</small></div>";
-}
+**Student Login — Login with Unique ID**
 
-fillCategories();
-</script>
-</body>
-</html>
-```
+The login form must contain only:
 
-AI assistant, असली database, login और admin dashboard अभी इसमें नहीं हैं। उन्हें हम इस frontend के live होने और test होने के बाद एक-एक करके जोड़ेंगे।
+- Unique Account ID
+- Password
+
+When the student submits the form:
+
+1. Verify the credentials on the backend.
+2. If they are correct, open the student's existing dashboard.
+3. If they are incorrect, show a clear error message.
+4. Never create a new account during login.
+5. Never generate a new Account ID during login.
+6. Load the student's saved details and previous complaints from the database.
+
+Provide secure sessions, logout and session expiration. Do not require OTP.
+
+## 5. Password Reset by Super Admin Only
+
+If a student forgets their password:
+
+- The student must contact or request assistance from the Super Admin.
+- Only an authorized Super Admin can reset the student's password.
+- The Super Admin must not be able to view or recover the old password.
+- Generate a new secure password or use another secure reset procedure.
+- Display any newly generated password only through a controlled, one-time process.
+- Record the reset action in the audit log.
+- Keep the student's original Account ID and complaints unchanged.
+- Do not allow a password reset simply because someone knows a student's Account ID or mobile number.
+
+Admin must not have permission to reset student passwords unless the Super Admin explicitly authorizes such a permission.
+
+## 6. Student Dashboard
+
+After successful registration or login, show:
+
+- Student Name
+- Mobile Number
+- Course
+- Semester
+- Permanent Account ID
+- Submit New Complaint
+- My Complaints
+- Track My Complaint
+- Complaint IDs and current statuses
+- Complaint history and latest updates
+- Logout
+
+Fetch all information from the backend database. Never use hardcoded sample data as the official account or complaint records.
+
+Students must only be able to access their own complaints.
+
+## 7. Complaint Submission
+
+Connect the existing Report a Problem form to a real backend and database.
+
+Preserve the existing useful fields:
+
+- Problem Title
+- Problem Category
+- Problem Description
+- Location / Area
+- Date the problem started
+- Priority
+- Optional Contact Information, where appropriate
+- Contact consent checkbox, where applicable
+
+Associate every complaint with the authenticated student's account on the backend. Never trust an Account ID submitted by the browser without verifying the authenticated session.
+
+Keep all 14 existing categories:
+
+1. Water, Leakage, Drainage and Waterlogging
+2. Cleaning, Garbage and Sanitation
+3. Electricity and Streetlights
+4. Roads, Potholes and Public Infrastructure
+5. Internet, Wi-Fi and Technical Problems
+6. School, College, University and Hostel Problems
+7. Building Maintenance and Broken Facilities
+8. Transport and Public Facilities
+9. Environment and Pollution
+10. Online Services and Digital Problems
+11. Customer Service and Service Complaints
+12. Study, Career and General Guidance
+13. Safety-related Concerns and Sensitive Complaints
+14. Other Problems
+
+Preserve the existing category-specific solution guidance.
+
+## 8. Automatic Complaint ID
+
+When a complaint is successfully submitted:
+
+1. Validate the request on the backend.
+2. Verify the student's authenticated session.
+3. Generate a unique Complaint ID on the backend.
+4. Save the complaint and its initial status in the database.
+5. Save the submission timestamp.
+6. Show the Complaint ID only after successful database saving.
+
+Every complaint must have its own permanent Complaint ID. Refreshing the page or logging out must not change it.
+
+Use database constraints to prevent duplicate IDs. Handle failed submissions correctly and prevent accidental duplicate submissions where possible.
+
+Do not generate official Complaint IDs using frontend `Math.random()`.
+
+## 9. Complaint Tracking System
+
+Connect the existing Track My Report section to the backend.
+
+Students must be able to see their own complaints and track their progress.
+
+Display:
+
+- Complaint ID
+- Problem title
+- Category
+- Location
+- Submission date
+- Current status
+- Assigned staff member, where appropriate
+- Latest update
+- Relevant work notes or solution
+- Status history with timestamps
+
+Use these statuses:
+
+1. Submitted
+2. Under Review
+3. Assigned
+4. In Progress
+5. Waiting for Information
+6. Resolved
+7. Closed
+
+Save every status change permanently, including the previous status, new status, timestamp, responsible staff member and relevant note.
+
+Students must not be able to access another student's private complaint merely by guessing or entering its Complaint ID.
+
+## 10. Admin Login and Dashboard
+
+Create a separate Admin Login page. Admin accounts must be created and managed by the Super Admin.
+
+Admin must log in using their assigned username and password. Do not use student registration for staff accounts.
+
+**Important: Admin must be able to view ALL complaints submitted by ALL students, not just assigned complaints.**
+
+The Admin dashboard must show:
+
+- All complaints
+- Total complaint count
+- Status-wise complaint counts
+- Complaint ID
+- Student Account ID
+- Problem title and category
+- Description and location
+- Priority and submission date
+- Current status
+- Assigned staff member
+- Latest work notes
+- Complaint history
+
+Provide search and filters by Complaint ID, category, status, date and assigned staff member.
+
+Admin can:
+
+- Open any complaint.
+- Update its status.
+- Add work notes and solution details.
+- Request additional information.
+- Mark work as resolved when appropriate.
+- View complaint history.
+- Escalate complaints to the Super Admin.
+
+Admin cannot create or promote Super Admins, change their own role, delete official complaints or access Super Admin-only staff-management functions.
+
+## 11. Super Admin Login and Dashboard
+
+Create a separate Super Admin Login page and dashboard.
+
+The first Super Admin must be created through a secure setup process. Do not hardcode production credentials or allow public Super Admin registration.
+
+**Super Admin must also be able to view ALL complaints submitted by ALL students.**
+
+Super Admin can:
+
+- View, search and filter all complaints.
+- Create, activate, deactivate and manage Admin accounts.
+- Assign and reassign complaints.
+- Update complaint status and official notes.
+- Reset student passwords through a secure process.
+- Monitor complaint progress and resolutions.
+- View staff activity and audit logs.
+- Archive duplicate, abusive or test complaints with confirmation and a recorded reason.
+- See who performed important actions and when.
+
+Prefer archiving over permanent deletion. Preserve audit records even when a complaint is archived.
+
+Deactivated staff must lose access to privileged functions, including through existing sessions once revocation takes effect.
+
+## 12. Backend and Database
+
+Implement a real backend using Node.js and Express, with PostgreSQL or another suitable persistent database.
+
+Create appropriate tables or models for:
+
+- Student accounts
+- Admin and Super Admin accounts
+- Roles and permissions
+- Complaints
+- Complaint assignments
+- Complaint status history
+- Audit logs
+- Sessions, where required
+
+Create functional backend endpoints for:
+
+- Student registration
+- Student login using Account ID and password
+- Logout
+- Student profile and dashboard
+- Complaint submission
+- Student's own complaints
+- Complaint tracking
+- Admin login and dashboard
+- All-complaint listing for Admin
+- Complaint status updates
+- Super Admin login and dashboard
+- Staff account management
+- Password resets
+- Complaint assignment and reassignment
+- Audit log access
+
+The database must be the source of truth. Do not use browser `localStorage` as the official account database, complaint database or authentication system.
+
+Data must persist after refresh, browser closure, logout and login from another authorized device.
+
+## 13. Security Requirements
+
+Implement:
+
+- Strong password hashing.
+- Server-side authentication and role-based authorization.
+- Secure session handling and logout.
+- Appropriate secure cookie settings.
+- Login rate limiting and protection against brute-force attempts.
+- Server-side input validation.
+- Safe parameterized database queries or a suitable ORM.
+- Protection against SQL injection and XSS.
+- CSRF protection where applicable.
+- Appropriate CORS configuration.
+- HTTPS in production.
+- Environment variables for secrets and database credentials.
+- Safe error messages.
+- Database backup and recovery instructions.
+- Audit logs for sensitive administrative actions.
+
+Test that:
+
+- Students can only access their own complaints.
+- Admins can see all complaints but cannot access Super Admin-only management functions.
+- Super Admins can see all complaints and manage staff.
+- Users cannot change their roles by editing browser data.
+- Deactivated staff lose privileged access.
+- Duplicate accounts and IDs are rejected safely.
+
+Do not claim the system is fully secure until the implementation has been tested.
+
+## 14. Preserve My Existing Frontend
+
+Keep these existing sections and useful features:
+
+- Home
+- Report a Problem
+- Track My Report
+- Find a Solution
+- Help
+- All 14 complaint categories
+- How It Works
+- Existing Hindi content and responsive design
+
+Add student registration, the one-time credential display and warning, Student Login, Admin Login, Super Admin Login and their respective dashboards.
+
+Connect every important form and button to working backend functionality.
+
+## 15. Implementation Order
+
+Implement the project in this order:
+
+**Part 1 — Authentication and Accounts**
+- Backend and database setup
+- Student registration
+- Automatically generated Account ID and password
+- One-time credential display and warning
+- Login using Account ID and password
+- Student details
+- Separate Admin and Super Admin login
+- Secure sessions and role permissions
+
+**Part 2 — Complaint Submission and Tracking**
+- Complaint form connected to the backend
+- Automatic Complaint ID
+- Permanent database storage
+- Student dashboard and complaint history
+- Complaint tracking
+- Status updates and timestamps
+
+**Part 3 — Admin, Super Admin and Security**
+- Both Admin and Super Admin can view all complaints
+- Staff account management
+- Password reset by Super Admin
+- Complaint assignment and reassignment
+- Status updates and resolution notes
+- Audit logs and controlled complaint archiving
+- Security and authorization tests
+
+Do not implement OTP or SMS functionality. Do not add unrelated extra features before these parts are working.
+
+## 16. Complete Code and Setup Instructions
+
+First inspect my existing project files, then implement the required changes.
+
+Provide:
+
+- Complete code for every modified or new file
+- Exact file paths
+- Database schema and setup instructions
+- A safe `.env.example` without real secrets
+- `.gitignore` rules to protect credentials
+- Exact installation and startup commands
+- Instructions for securely creating the first Super Admin
+- Instructions for running and deploying the frontend, backend and database
+- Tests for registration, one-time credential display, login, password reset, duplicate IDs, complaint submission, tracking and role permissions
+
+Do not stop after giving a plan. Do not leave core features as TODO comments. Do not provide fake authentication, sample-only complaints or non-functional buttons.
+
+**Hosting note:** GitHub Pages can host the static frontend but cannot run the Node.js backend by itself. Host the backend and database separately and configure the frontend to connect to them. Never put private keys or database credentials in the public repository.
+
+Start by inspecting my existing project and implement these requirements in the existing codebase without unnecessarily redesigning the website.
