@@ -1,335 +1,208 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LTSUCare Project - Lamrin Tech Skills University Punjab</title>
-    <style>
-        :root {
-            --primary: #6b21a8;        /* Rich Purple */
-            --primary-dark: #4c1d95;   /* Deep Plum */
-            --accent: #10b981;         /* Vibrant Emerald Green */
-            --accent-hover: #059669;
-            --bg-gradient: linear-gradient(135deg, #fdf4ff 0%, #fef3c7 50%, #ecfdf5 100%); /* Colourful warm multi-tone background */
-            --card-bg: #ffffff;
-            --text-dark: #18181b;
-            --text-muted: #52525b;
-            --danger: #f43f5e;         /* Coral Rose */
-            --success: #059669;
-            --warning: #d97706;        /* Warm Amber */
-        }
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        body { background: var(--bg-gradient); color: var(--text-dark); min-height: 100vh; line-height: 1.6; }
-        
-        header { background: linear-gradient(90deg, var(--primary-dark), #9333ea); color: white; padding: 1.25rem 2rem; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 15px rgba(107, 33, 168, 0.2); }
-        header h1 { font-size: 1.4rem; letter-spacing: 0.5px; font-weight: 700; }
-        
-        .container { max-width: 1100px; margin: 2.5rem auto; padding: 0 1.5rem; }
-        
-        .card { background: var(--card-bg); padding: 2.5rem; border-radius: 16px; box-shadow: 0 10px 25px -5px rgba(147, 51, 234, 0.08), 0 8px 10px -6px rgba(147, 51, 234, 0.05); margin-bottom: 2rem; border: 2px solid #f3e8ff; }
-        
-        h2, h3 { color: var(--primary-dark); margin-bottom: 1.25rem; font-weight: 700; }
-        p { color: var(--text-muted); }
-        
-        .form-group { margin-bottom: 1.25rem; }
-        label { display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--text-dark); font-size: 0.95rem; }
-        input, select, textarea { width: 100%; padding: 0.85rem 1rem; border: 2px solid #e9d5ff; border-radius: 10px; font-size: 1rem; background: #faf5ff; transition: all 0.3s; }
-        input:focus, select:focus, textarea:focus { outline: none; border-color: var(--accent); background: #fff; box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.15); }
-        
-        button { background: var(--accent); color: white; border: none; padding: 0.85rem 1.75rem; border-radius: 10px; font-size: 1rem; cursor: pointer; font-weight: 600; transition: all 0.2s; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3); }
-        button:hover { background: var(--accent-hover); transform: translateY(-2px); box-shadow: 0 6px 15px rgba(16, 185, 129, 0.4); }
-        button.danger { background: var(--danger); box-shadow: 0 4px 12px rgba(244, 63, 94, 0.3); }
-        button.danger:hover { background: #e11d48; }
-        button.secondary { background: #78716c; box-shadow: 0 4px 12px rgba(120, 113, 108, 0.3); }
-        button.secondary:hover { background: #57534e; }
-        
-        .hidden { display: none !important; }
-        
-        table { width: 100%; border-collapse: collapse; margin-top: 1.25rem; background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
-        th, td { padding: 1rem; border-bottom: 1px solid #f3e8ff; text-align: left; font-size: 0.95rem; }
-        th { background: #faf5ff; color: var(--primary-dark); font-weight: 700; }
-        
-        .badge { padding: 0.35rem 0.85rem; border-radius: 50px; font-size: 0.8rem; font-weight: 700; display: inline-block; text-transform: uppercase; letter-spacing: 0.5px; }
-        .badge-submitted { background: #fef3c7; color: #92400e; }
-        .badge-review { background: #f3e8ff; color: #6b21a8; }
-        .badge-progress { background: #ffedd5; color: #c2410c; }
-        .badge-resolved { background: #d1fae5; color: #065f46; }
-        
-        .nav-tabs { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-bottom: 1.75rem; border-bottom: 3px solid #f3e8ff; padding-bottom: 0.75rem; }
-        .nav-tabs button { background: #f3e8ff; color: var(--primary-dark); padding: 0.7rem 1.25rem; box-shadow: none; font-size: 0.95rem; font-weight: 700; border-radius: 10px; }
-        .nav-tabs button.active { background: linear-gradient(135deg, var(--primary), #9333ea); color: white; box-shadow: 0 4px 12px rgba(147, 51, 234, 0.3); }
-        
-        .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(24, 24, 27, 0.6); backdrop-filter: blur(6px); display: flex; justify-content: center; align-items: center; z-index: 1000; }
-        .modal-content { background: white; padding: 2.5rem; border-radius: 20px; max-width: 480px; width: 100%; text-align: center; box-shadow: 0 25px 30px -10px rgba(0,0,0,0.2); border: 2px solid #f3e8ff; }
-        
-        .timeline { display: flex; justify-content: space-between; margin-top: 0.75rem; position: relative; font-size: 0.8rem; color: var(--text-muted); }
-        .timeline-step { text-align: center; flex: 1; position: relative; }
-        .timeline-step span { width: 26px; height: 26px; border-radius: 50%; background: #e4e4e7; display: inline-block; line-height: 26px; color: white; font-weight: bold; margin-bottom: 4px; font-size: 0.75rem; }
-        .timeline-step.active span { background: var(--accent); box-shadow: 0 0 10px rgba(16, 185, 129, 0.5); }
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>LTSUCare — Campus Problem Reporting Portal</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+<style>
+:root{--b:#2563eb;--p:#7c3aed;--g:#059669;--bg:#f5f7ff;--t:#1e1b4b;--m:#64748b}
+*{box-sizing:border-box}body{margin:0;font-family:system-ui,Segoe UI,sans-serif;background:var(--bg);color:var(--t)}
+header{position:sticky;top:0;z-index:5;display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between;padding:10px 16px;background:#fff;box-shadow:0 2px 12px #0001}
+header b{font-size:1.2rem;background:linear-gradient(90deg,var(--b),var(--p));-webkit-background-clip:text;color:transparent}
+nav{display:flex;gap:6px;flex-wrap:wrap;align-items:center}nav a{color:var(--t);text-decoration:none;padding:6px 10px;border-radius:8px;font-size:.9rem;cursor:pointer}nav a:hover{background:#e0e7ff}
+button{font:inherit;cursor:pointer;border:0;border-radius:10px;padding:10px 16px;color:#fff;background:linear-gradient(90deg,var(--b),var(--p));font-weight:600;transition:.2s}button:hover{transform:translateY(-2px);box-shadow:0 6px 16px #7c3aed44}
+.b2{background:#e0e7ff;color:var(--t)}.bd{background:#dc2626}.big{padding:14px 26px;font-size:1.05rem}button:disabled{opacity:.6;cursor:wait}
+.hero{padding:56px 18px;text-align:center;color:#fff;background:linear-gradient(135deg,#2563eb,#7c3aed 55%,#059669)}
+.hero h1{margin:0 0 6px;font-size:clamp(1.8rem,6vw,3rem)}.hero p{max-width:640px;margin:10px auto;font-size:1.05rem}.hero .row{justify-content:center}
+.wrap{max-width:1050px;margin:auto;padding:24px 16px}h2{margin:26px 0 12px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
+.card{background:#fff;border-radius:16px;padding:16px;box-shadow:0 4px 18px #1e1b4b14;margin-bottom:12px;animation:f .4s}
+@keyframes f{from{opacity:0;transform:translateY(8px)}}
+.pc{text-align:center;border-top:6px solid;transition:.2s}.pc:hover{transform:translateY(-4px)}.pc .ic{font-size:2.2rem}
+.bronze{border-color:#b45309}.plat{border-color:#64748b}.gold{border-color:#d4a017}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+input,select,textarea{font:inherit;padding:10px;border:1px solid #c7d2fe;border-radius:10px;width:100%;background:#fff}.row input,.row select{width:auto;flex:1;min-width:140px}
+label{font-size:.85rem;color:var(--m);display:block;margin:8px 0 3px}
+.tag{background:#ede9fe;color:var(--p);padding:2px 8px;border-radius:99px;font-size:.78rem;font-weight:700}.tag.r{background:#fee2e2;color:#dc2626}
+small{color:var(--m)}.note{background:#ecfdf5;padding:8px;border-radius:8px}.tip{background:#eff6ff;border-left:4px solid var(--b);padding:8px 10px;border-radius:8px;margin:8px 0;font-size:.9rem}
+.tl{display:flex;gap:4px;margin:10px 0}.tl span{flex:1;text-align:center;font-size:.72rem;padding:6px 2px;background:#e5e7eb;border-radius:8px}.tl .on{background:var(--g);color:#fff}
+.stat{text-align:center}.stat b{font-size:2rem;display:block;color:var(--p)}
+.bar{height:10px;border-radius:9px;background:linear-gradient(90deg,var(--b),var(--g))}
+dialog{border:0;border-radius:18px;padding:20px;width:min(420px,94vw)}dialog::backdrop{background:#0008}
+#toast{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);padding:12px 18px;border-radius:12px;color:#fff;background:var(--g);z-index:99;max-width:92vw;display:none}#toast.e{background:#dc2626}
+footer{background:#1e1b4b;color:#cbd5e1;text-align:center;padding:24px 16px;font-size:.9rem;margin-top:30px}footer a{color:#a5b4fc;cursor:pointer;text-decoration:underline}
+.tw{overflow-x:auto}table{width:100%;border-collapse:collapse;font-size:.88rem}td,th{padding:8px;border-bottom:1px solid #e5e7eb;text-align:left}
+pre{background:#0f172a;color:#e2e8f0;padding:12px;border-radius:12px;max-height:340px;overflow:auto;font-size:.78rem;white-space:pre-wrap}
+</style></head><body>
+<header><b>🎓 LTSUCare</b><nav id="nav"></nav></header>
+<div id="toast"></div>
 
-        .ai-suggestion-box { background: #faf5ff; border-left: 5px solid var(--primary); padding: 1.25rem; border-radius: 0 12px 12px 0; margin-bottom: 1.25rem; font-size: 0.95rem; color: #581c87; border-top: 1px solid #f3e8ff; border-right: 1px solid #f3e8ff; border-bottom: 1px solid #f3e8ff; box-shadow: 0 2px 6px rgba(147, 51, 234, 0.04); }
-    </style>
-</head>
-<body>
+<main id="home" class="view">
+<section class="hero"><small style="color:#e0e7ff">Lamrin Tech Skills University Punjab</small>
+<h1>LTSUCare — Campus Problem Reporting Portal</h1>
+<p><b>Report Campus Problems. Track Progress. Build a Better Campus.</b></p>
+<p>Students report issues with photos or videos; university staff review, update and resolve them transparently.</p>
+<div class="row"><button class="big" style="background:#fff;color:var(--p)" onclick="reportNow()">📝 Report a Problem</button>
+<button class="big" style="background:#10b981" onclick="document.getElementById('track').scrollIntoView({behavior:'smooth'})">🔎 Track Progress</button></div></section>
+<div class="wrap">
+<h2>Choose your portal</h2>
+<div class="grid">
+<div class="card pc bronze"><div class="ic">🎒</div><h3>Student Portal</h3><p><small>Register, report problems and track status.</small></p><button class="big" onclick="openAuth('student')">Student Login / Register</button></div>
+<div class="card pc plat"><div class="ic">🛠️</div><h3>Admin Portal</h3><p><small>Authorised staff: review and resolve complaints.</small></p><button class="big" onclick="openAuth('admin')">Admin Login</button></div>
+<div class="card pc gold"><div class="ic">👑</div><h3>Super Admin Portal</h3><p><small>Full control, staff access and analytics.</small></p><button class="big" onclick="openAuth('super_admin')">Super Admin Login</button></div></div>
+<h2 id="track">Track a complaint</h2>
+<div class="card"><div class="row"><input id="tid" placeholder="Enter Complaint ID e.g. LTSU-1A2B3C4D"><button onclick="trackIt()">Track</button></div><div id="tres"></div></div>
+<h2>How it works</h2>
+<div class="grid"><div class="card">1️⃣ <b>Register</b><br><small>Create a student account.</small></div><div class="card">2️⃣ <b>Report</b><br><small>Pick category, location, add evidence.</small></div><div class="card">3️⃣ <b>Review</b><br><small>Staff review and work on it.</small></div><div class="card">4️⃣ <b>Resolved</b><br><small>See updates until it is fixed.</small></div></div>
+<h2>Benefits</h2>
+<div class="grid"><div class="card">🔒 <b>Secure</b><br><small>Real login; students see only their own complaints.</small></div><div class="card">👁️ <b>Transparent</b><br><small>Live status and staff notes.</small></div><div class="card">📱 <b>Anywhere</b><br><small>Works on phone, laptop and desktop.</small></div><div class="card">📊 <b>Organised</b><br><small>14 categories, unique complaint IDs.</small></div></div>
+</div></main>
 
-    <header>
-        <h1>🏛️ LTSUCare Project — Lamrin Tech Skills University Punjab</h1>
-        <div id="user-info" class="hidden">
-            <span id="welcome-msg" style="font-weight: 700; margin-right: 1rem; background: rgba(255,255,255,0.15); padding: 0.4rem 0.8rem; border-radius: 8px;"></span>
-            <button onclick="logout()" class="secondary" style="padding: 0.4rem 1rem; font-size: 0.9rem;">Logout</button>
-        </div>
-    </header>
+<main id="dash" class="view wrap" hidden></main>
 
-    <div class="container">
-        
-        <!-- AUTH SCREEN -->
-        <div id="auth-screen" class="card">
-            <h2>Campus Problem Reporting Portal</h2>
-            <p style="margin-bottom: 1.75rem;">Fast, secure, colourful and transparent university grievance resolution system.</p>
-            
-            <div class="nav-tabs">
-                <button type="button" class="active" onclick="switchAuthTab('student-login', this)">Student Login</button>
-                <button type="button" onclick="switchAuthTab('student-register', this)">Student Register</button>
-                <button type="button" onclick="switchAuthTab('staff-login', this)">Admin Portal</button>
-                <button type="button" onclick="switchAuthTab('super-staff-login', this)">Super Admin Portal</button>
-            </div>
+<main id="setup" class="view wrap" hidden>
+<h2>🔧 One-time Setup (sirf owner ke liye)</h2>
+<div class="card"><p>1) Apni Supabase login email likhein &nbsp;2) Copy SQL dabayein &nbsp;3) Supabase &rarr; SQL Editor &rarr; New query &rarr; Paste &rarr; Run.</p>
+<input id="semail" type="email" placeholder="your-email@example.com"><p><button id="scopy">📋 Copy SQL</button></p><pre id="sqlout"></pre></div></main>
 
-            <!-- Student Login -->
-            <div id="tab-student-login">
-                <h3>Student Portal Sign In</h3>
-                <div class="form-group">
-                    <label>Unique Account ID (e.g., LTSU-USER-1001)</label>
-                    <input type="text" id="login-id" placeholder="Enter your Account ID">
-                </div>
-                <div class="form-group">
-                    <label>Single-Time Password</label>
-                    <input type="password" id="login-pass" placeholder="Enter your password">
-                </div>
-                <button onclick="loginStudent()">Login to Dashboard</button>
-            </div>
+<dialog id="dlg"><h3 id="at"></h3>
+<div class="row" id="reg"><button class="b2" onclick="setMode('login')">Login</button><button class="b2" onclick="setMode('register')">Register</button></div>
+<form id="af"><div id="nmw" hidden><label>Full name</label><input id="nm"></div>
+<label>Email</label><input id="em" type="email" required autocomplete="username">
+<label>Password (min 8)</label><input id="pw" type="password" required minlength="8" autocomplete="current-password">
+<p class="row"><button id="asub" style="flex:1">Login</button><button type="button" class="b2" onclick="dlg.close()">Cancel</button></p></form></dialog>
 
-            <!-- Student Register -->
-            <div id="tab-student-register" class="hidden">
-                <h3>New Student Account Setup</h3>
-                <div class="form-group">
-                    <label>Full Name</label>
-                    <input type="text" id="reg-name" placeholder="Enter your full name">
-                </div>
-                <div class="form-group">
-                    <label>Course / Program</label>
-                    <input type="text" id="reg-course" placeholder="e.g. B.Tech CSE, BCA, B.Pharm">
-                </div>
-                <div class="form-group">
-                    <label>Mobile Number</label>
-                    <input type="text" id="reg-mobile" placeholder="Enter 10-digit mobile number">
-                </div>
-                <button onclick="registerStudent()">Generate Credentials</button>
-            </div>
+<footer><b>Lamrin Tech Skills University Punjab</b><br>LTSUCare is a student-developed project (B.Tech AI &amp; ML). It is not officially approved by the university unless approval is announced.<br><a onclick="openSetup()">One-time Setup</a> · © 2026 LTSUCare</footer>
 
-            <!-- Admin Login -->
-            <div id="tab-staff-login" class="hidden">
-                <h3>Admin Portal Login</h3>
-                <div class="form-group">
-                    <label>Admin Username</label>
-                    <input type="text" id="admin-user" placeholder="Enter username (admin)">
-                </div>
-                <div class="form-group">
-                    <label>Password</label>
-                    <input type="password" id="admin-pass" placeholder="Enter password (Admin@LTSU2026)">
-                </div>
-                <button onclick="loginAdmin()">Login as Admin</button>
-            </div>
+<script type="text/plain" id="sqlsrc">
+-- LTSUCare one-time setup. Safe: nothing is dropped.
+create table if not exists public.profiles(
+  id uuid primary key references auth.users(id) on delete cascade,
+  full_name text, email text unique,
+  role text not null default 'student' check (role in ('student','admin','super_admin')),
+  department text, is_active boolean not null default true, created_at timestamptz default now());
+create table if not exists public.role_grants(
+  email text primary key, role text not null check (role in ('admin','super_admin')), created_at timestamptz default now());
+create table if not exists public.complaints(
+  id uuid primary key default gen_random_uuid(),
+  complaint_id text unique not null default ('LTSU-'||upper(substr(md5(random()::text||clock_timestamp()::text),1,8))),
+  user_id uuid not null references public.profiles(id) on delete cascade,
+  category text not null, title text not null, location text not null, description text not null, media_path text,
+  status text not null default 'Submitted' check (status in ('Submitted','Under Review','In Progress','Resolved')),
+  escalated boolean not null default false, notes text,
+  created_at timestamptz default now(), updated_at timestamptz default now());
+create table if not exists public.activity_logs(
+  id bigint generated always as identity primary key,
+  actor_id uuid references auth.users(id) on delete set null,
+  action text not null, target text, details text, created_at timestamptz default now());
+create index if not exists c_user on public.complaints(user_id);
+create index if not exists c_status on public.complaints(status);
+alter table public.profiles enable row level security;
+alter table public.role_grants enable row level security;
+alter table public.complaints enable row level security;
+alter table public.activity_logs enable row level security;
 
-            <!-- Super Admin Login -->
-            <div id="tab-super-staff-login" class="hidden">
-                <h3>Super Admin Master Login</h3>
-                <div class="form-group">
-                    <label>Super Admin Username</label>
-                    <input type="text" id="superadmin-user" placeholder="Enter username (superadmin)">
-                </div>
-                <div class="form-group">
-                    <label>Password</label>
-                    <input type="password" id="superadmin-pass" placeholder="Enter password (Superadmin@LTSU2026)">
-                </div>
-                <button onclick="loginSuperAdmin()">Login as Super Admin</button>
-            </div>
-        </div>
+create or replace function public.my_role() returns text language sql stable security definer set search_path=public as
+$$ select role from public.profiles where id=auth.uid() and is_active $$;
 
-        <!-- STUDENT DASHBOARD -->
-        <div id="student-dashboard" class="hidden">
-            <div class="card">
-                <h2>Raise a New Campus Complaint</h2>
-                <div class="form-group">
-                    <label>Problem Category (14 University Categories)</label>
-                    <select id="comp-category" onchange="generateAISuggestions()">
-                        <option value="Water Supply and Drainage">1. Water Supply and Drainage</option>
-                        <option value="Cleanliness and Garbage">2. Cleanliness and Garbage</option>
-                        <option value="Electricity and Lighting">3. Electricity and Lighting</option>
-                        <option value="Roads and Pathways">4. Roads and Pathways</option>
-                        <option value="Internet and Wi-Fi">5. Internet and Wi-Fi</option>
-                        <option value="Campus Security">6. Campus Security</option>
-                        <option value="Buildings and Infrastructure">7. Buildings and Infrastructure</option>
-                        <option value="Hostel Problems">8. Hostel Problems</option>
-                        <option value="Classrooms">9. Classrooms</option>
-                        <option value="Washrooms">10. Washrooms</option>
-                        <option value="Furniture and Equipment">11. Furniture and Equipment</option>
-                        <option value="Laboratory Problems">12. Laboratory Problems</option>
-                        <option value="Parking and Transportation">13. Parking and Transportation</option>
-                        <option value="Other Campus Problems">14. Other Campus Problems</option>
-                    </select>
-                </div>
+create or replace function public.handle_new_user() returns trigger language plpgsql security definer set search_path=public as $$
+declare g text;
+begin
+  select role into g from public.role_grants where email=lower(new.email);
+  insert into public.profiles(id,email,full_name,role)
+  values(new.id,lower(new.email),coalesce(new.raw_user_meta_data->>'full_name',''),coalesce(g,'student')) on conflict do nothing;
+  delete from public.role_grants where email=lower(new.email);
+  return new;
+end $$;
+drop trigger if exists on_auth_user_created on auth.users;
+create trigger on_auth_user_created after insert on auth.users for each row execute function public.handle_new_user();
 
-                <div id="ai-suggestion-box" class="ai-suggestion-box">
-                    ✨ <b>AI Assistant Guidance:</b> Select a category to get instant troubleshooting tips and resolution steps.
-                </div>
+drop policy if exists p_sel on public.profiles;
+drop policy if exists p_upd on public.profiles;
+create policy p_sel on public.profiles for select to authenticated using (id=auth.uid() or public.my_role() in ('admin','super_admin'));
+create policy p_upd on public.profiles for update to authenticated using (public.my_role()='super_admin' and id<>auth.uid()) with check (public.my_role()='super_admin');
+revoke insert,update,delete on public.profiles from anon,authenticated;
+grant update(role,is_active,department,full_name) on public.profiles to authenticated;
 
-                <div class="form-group">
-                    <label>Complaint Title</label>
-                    <input type="text" id="comp-title" placeholder="Short title e.g. Lab 3 AC not cooling">
-                </div>
-                
-                <div class="form-group">
-                    <label>Manual Location Typing (Block, Room No., Landmark)</label>
-                    <input type="text" id="comp-location" placeholder="Type location manually e.g. Academic Block 2, 3rd Floor, Room 304">
-                </div>
+drop policy if exists g_all on public.role_grants;
+create policy g_all on public.role_grants for all to authenticated using (public.my_role()='super_admin') with check (public.my_role()='super_admin');
+revoke all on public.role_grants from anon;
 
-                <div class="form-group">
-                    <label>Detailed Description</label>
-                    <textarea id="comp-desc" rows="3" placeholder="Explain the problem in detail..."></textarea>
-                </div>
+drop policy if exists c_sel on public.complaints;
+drop policy if exists c_ins on public.complaints;
+drop policy if exists c_upd on public.complaints;
+drop policy if exists c_del on public.complaints;
+create policy c_sel on public.complaints for select to authenticated using (user_id=auth.uid() or public.my_role() in ('admin','super_admin'));
+create policy c_ins on public.complaints for insert to authenticated with check (user_id=auth.uid() and status='Submitted' and escalated=false and public.my_role() is not null);
+create policy c_upd on public.complaints for update to authenticated using (public.my_role() in ('admin','super_admin')) with check (public.my_role() in ('admin','super_admin'));
+create policy c_del on public.complaints for delete to authenticated using (public.my_role()='super_admin');
+revoke update on public.complaints from anon,authenticated;
+grant update(status,notes,escalated,updated_at) on public.complaints to authenticated;
 
-                <div class="form-group">
-                    <label>📸 Media Evidence (Upload Photo / Video)</label>
-                    <input type="file" id="comp-media" accept="image/*,video/*">
-                    <small style="color:var(--text-muted);">Attach pictures or video clips as proof of the issue.</small>
-                </div>
+drop policy if exists l_ins on public.activity_logs;
+drop policy if exists l_sel on public.activity_logs;
+create policy l_ins on public.activity_logs for insert to authenticated with check (actor_id=auth.uid() and public.my_role() in ('admin','super_admin'));
+create policy l_sel on public.activity_logs for select to authenticated using (public.my_role()='super_admin');
+revoke update,delete on public.activity_logs from anon,authenticated;
 
-                <div class="form-group" style="margin-top: 1rem;">
-                    <label>Send Complaint To:</label>
-                    <select id="comp-target">
-                        <option value="Admin">Admin Portal (Local Maintenance)</option>
-                        <option value="Super Admin">Super Admin Portal (University Authority)</option>
-                        <option value="Both">Both Portals</option>
-                    </select>
-                </div>
+create or replace function public.track_complaint(cid text) returns table(status text, updated_at timestamptz)
+language sql stable security definer set search_path=public as
+$$ select c.status,c.updated_at from public.complaints c where c.complaint_id=upper(trim(cid)) $$;
+grant execute on function public.track_complaint(text) to anon,authenticated;
 
-                <button onclick="submitComplaint()">Submit Complaint with Unique ID</button>
-            </div>
+insert into storage.buckets(id,name,public,file_size_limit) values('evidence','evidence',false,20971520) on conflict(id) do nothing;
+drop policy if exists ev_ins on storage.objects;
+drop policy if exists ev_sel on storage.objects;
+drop policy if exists ev_del on storage.objects;
+create policy ev_ins on storage.objects for insert to authenticated with check(bucket_id='evidence' and (storage.foldername(name))[1]=auth.uid()::text);
+create policy ev_sel on storage.objects for select to authenticated using(bucket_id='evidence' and ((storage.foldername(name))[1]=auth.uid()::text or public.my_role() in ('admin','super_admin')));
+create policy ev_del on storage.objects for delete to authenticated using(bucket_id='evidence' and public.my_role()='super_admin');
+do $$ begin alter publication supabase_realtime add table public.complaints; exception when others then null; end $$;
 
-            <div class="card">
-                <h2>My Submitted Complaints & Live Progress Tracker</h2>
-                <div id="student-complaints-list"></div>
-            </div>
-        </div>
+-- Make YOUR existing account the Super Admin
+insert into public.profiles(id,email,full_name) select id,lower(email),'' from auth.users on conflict do nothing;
+update public.profiles set role='super_admin',is_active=true where email=lower('YOUR_EMAIL@example.com');
+</script>
 
-        <!-- ADMIN DASHBOARD -->
-        <div id="admin-dashboard" class="hidden">
-            <div class="card">
-                <h2>Admin Control Panel (Local Staff)</h2>
-                <p>Review assigned problems, update progress, or escalate complex issues to the Super Admin.</p>
-                <div id="admin-complaints-list" style="margin-top: 1.5rem;"></div>
-            </div>
-        </div>
-
-        <!-- SUPER ADMIN DASHBOARD -->
-        <div id="super-admin-dashboard" class="hidden">
-            <div class="card">
-                <h2>Super Admin Master Dashboard</h2>
-                <p>Complete authority over all records, escalations, student account recovery, and system management.</p>
-                
-                <div style="background: #faf5ff; padding: 1.5rem; border-radius: 12px; margin: 1.5rem 0; border: 2px solid #f3e8ff;">
-                    <h3 style="font-size: 1.1rem; margin-bottom: 0.75rem;">🔑 Student Lost Password Recovery</h3>
-                    <input type="text" id="reset-student-id" placeholder="Enter Student Account ID (e.g. LTSU-USER-1001)" style="width: 320px; display: inline-block; margin-right: 1rem;">
-                    <button onclick="superAdminResetPassword()" class="secondary" style="display: inline-block;">Reset Password</button>
-                </div>
-
-                <div id="super-admin-complaints-list"></div>
-            </div>
-        </div>
-
-    </div>
-
-    <!-- CREDENTIAL MODAL -->
-    <div id="credential-modal" class="modal hidden">
-        <div class="modal-content">
-            <h3 style="color: var(--danger); margin-bottom: 1rem;">⚠️ Single-Time Password Notice</h3>
-            <p style="margin-bottom: 1.25rem; font-size: 0.95rem;">Your account has been registered. This generated password is shown <strong>only once</strong>. Please take a screenshot or write it down immediately!</p>
-            <div id="modal-cred-box" style="background: #faf5ff; padding: 1.25rem; border-radius: 12px; font-weight: bold; margin-bottom: 1.5rem; text-align: left; border: 2px dashed #c084fc; color: #581c87;"></div>
-            <button onclick="closeCredentialModal()">I have saved my credentials safely</button>
-        </div>
-    </div>
-
-    <script>
-        if (!localStorage.getItem('ltsu_users')) localStorage.setItem('ltsu_users', JSON.stringify([]));
-        if (!localStorage.getItem('ltsu_complaints')) localStorage.setItem('ltsu_complaints', JSON.stringify([]));
-
-        let currentUser = null;
-
-        function switchAuthTab(tabId, btnElement) {
-            ['student-login', 'student-register', 'staff-login', 'super-staff-login'].forEach(id => {
-                const el = document.getElementById('tab-' + id);
-                if (el) el.classList.add('hidden');
-            });
-            document.querySelectorAll('.nav-tabs button').forEach(btn => btn.classList.remove('active'));
-            
-            const targetTab = document.getElementById('tab-' + tabId);
-            if (targetTab) targetTab.classList.remove('hidden');
-            if (btnElement) btnElement.classList.add('active');
-        }
-
-        function generateAISuggestions() {
-            const cat = document.getElementById('comp-category').value;
-            let tip = "Make sure to enter exact block and room details for faster resolution.";
-            if (cat.includes('Water')) tip = "AI Suggestion: Mention if the leakage is continuous or if main supply is blocked to speed up plumbing dispatch.";
-            else if (cat.includes('Electricity')) tip = "AI Suggestion: Note down the nearest switchboard number or MCB box location if possible.";
-            else if (cat.includes('Internet')) tip = "AI Suggestion: Mention whether it's Wi-Fi (LAN/SSID) or wired connection issue along with router indicator status.";
-            else if (cat.includes('Cleanliness')) tip = "AI Suggestion: Specify if extra garbage bins or immediate sweeping/sanitation staff is required.";
-            
-            const box = document.getElementById('ai-suggestion-box');
-            if (box) box.innerHTML = `✨ <b>AI Assistant Guidance:</b> ${tip}`;
-        }
-        window.onload = generateAISuggestions;
-
-        function registerStudent() {
-            const name = document.getElementById('reg-name').value.trim();
-            const course = document.getElementById('reg-course').value.trim();
-            const mobile = document.getElementById('reg-mobile').value.trim();
-
-            if (!name || !course || !mobile) {
-                alert('Please fill out all registration fields.');
-                return;
-            }
-
-            let users = JSON.parse(localStorage.getItem('ltsu_users'));
-            const userId = 'LTSU-USER-' + (1001 + users.length);
-            const password = 'LTSU@' + Math.floor(1000 + Math.random() * 9000);
-
-            users.push({ userId, name, course, mobile, password, role: 'student' });
-            localStorage.setItem('ltsu_users', JSON.stringify(users));
-
-            document.getElementById('modal-cred-box').innerHTML = `
-                Account ID: <span style="color:var(--primary);">${userId}</span><br>
-                Password: <span style="color:var(--danger);">${password}</span><br>
-                Student Name: ${name}
-            `;
-            document.getElementById('credential-modal').classList.remove('hidden');
-        }
-
-        function closeCredentialModal() {
-            document.getElementById('credential-modal').classList.add('hidden');
-            const loginBtn = document.querySelector('.nav-tabs button');
-            switchAuthTab('student-login', loginBtn);
-        }
-
-        function loginStudent() {
-            const id = document.getElementById('login-id').value.trim();
-            const pass = document.getElementById('login-pass').value.trim();
-
-            let users = JSON.parse(localStorage.getItem('ltsu_users'));
-            let user = users.find(u => u.userId === id && u.password === pass);
-
-            if (user) {
-                currentUser = user;
-                startDashboard();
-            } else {
-                alert('Invalid Account ID or Password.');
+<script>
+// ===== CONFIG (already filled for LTSUCare) =====
+const SUPABASE_URL='https://rylzenayuewhwyzwmnrs.supabase.co';
+const SUPABASE_ANON_KEY='sb_publishable_HyzyE44Ps3FS9P3fqlXxuA_-9wg0FDr';
+// ================================================
+const sb=supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
+const $=s=>document.querySelector(s),dlg=$('#dlg');
+const CATS=['Water Supply and Drainage','Cleanliness and Garbage','Electricity and Lighting','Roads and Pathways','Internet and Wi-Fi','Campus Security','Buildings and Infrastructure','Hostel Problems','Classrooms','Washrooms','Furniture and Equipment','Laboratory Problems','Parking and Transportation','Other Campus Problems'];
+const ST=['Submitted','Under Review','In Progress','Resolved'];
+const TIPS={'Water Supply and Drainage':'Is the leakage/blockage ongoing right now? Mention the exact tap, pipe or drain and the floor.','Electricity and Lighting':'Mention which light/switch/socket, whether it is completely off, and any sparking or burning smell (unsafe!).','Internet and Wi-Fi':'Mention the Wi-Fi name, the place, time of day, and whether it is slow or fully disconnected.','Cleanliness and Garbage':'Mention the spot, how long garbage has been there and whether bins are full or missing.','Campus Security':'For emergencies contact campus security directly first. Then describe place, time and what happened.','Washrooms':'Mention block/floor, and whether it is water, cleanliness or a broken fitting.'};
+const DEF='Be specific: what is wrong, where exactly (block, floor, room), since when, and is it still happening? Add a clear photo if possible.';
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+let me=null,portal=null,mode='login',ALL=[],ch=null;
+function toast(m,e){const t=$('#toast');t.textContent=m;t.className=e?'e':'';t.style.display='block';clearTimeout(t._t);t._t=setTimeout(()=>t.style.display='none',6000)}
+function view(v){['home','dash','setup'].forEach(x=>$('#'+x).hidden=x!==v);scrollTo(0,0)}
+function nav(){$('#nav').innerHTML=me?`<a onclick="view('dash')">Dashboard</a><small>${esc(me.full_name||me.email)} (${me.role})</small><button class="b2" onclick="logout()">Logout</button>`:`<a onclick="view('home')">Home</a><a onclick="openAuth('student')">Student</a><a onclick="openAuth('admin')">Admin</a><a onclick="openAuth('super_admin')">Super Admin</a>`}
+function reportNow(){me?view('dash'):openAuth('student')}
+function openSetup(){view('setup');fillSql()}
+function fillSql(){const em=($('#semail').value.trim()||'YOUR_EMAIL@example.com').replace(/'/g,"''");$('#sqlout').textContent=$('#sqlsrc').textContent.replace('YOUR_EMAIL@example.com',em).trim()}
+$('#semail').oninput=fillSql;
+$('#scopy').onclick=async()=>{fillSql();if(!$('#semail').value.trim())return toast('Pehle apni email likhein',1);try{await navigator.clipboard.writeText($('#sqlout').textContent);toast('SQL copied! Ab Supabase SQL Editor mein paste karke Run karein.')}catch{const r=document.createRange();r.selectNode($('#sqlout'));getSelection().removeAllRanges();getSelection().addRange(r);toast('Text select ho gaya, manually Copy karein.')}};
+function openAuth(p){portal=p;$('#at').textContent={student:'Student Portal',admin:'Admin Portal',super_admin:'Super Admin Portal'}[p];$('#reg').hidden=p!=='student';setMode('login');dlg.showModal()}
+function setMode(m){mode=m;$('#nmw').hidden=m!=='register';$('#asub').textContent=m==='login'?'Login':'Create account'}
+$('#af').onsubmit=async e=>{e.preventDefault();const b=$('#asub');b.disabled=true;b.textContent='Please wait…';
+ const em=$('#em').value.trim(),pw=$('#pw').value;
+ try{if(mode==='register'){const{data,error}=await sb.auth.signUp({email:em,password:pw,options:{data:{full_name:$('#nm').value.trim()}}});
+  if(error)throw error;if(!data.session){toast('Account created. Check your email to confirm, then login.');dlg.close()}else await boot(true)}
+ else{const{error}=await sb.auth.signInWithPassword({email:em,password:pw});if(error)throw error;await boot(true)}}
+ catch(x){toast(x.message,1)}b.disabled=false;setMode(mode)};
+async function boot(chk){
+ const{data:{session}}=await sb.auth.getSession();if(!session){me=null;nav();view('home');return}
+ const{data:p,error}=await sb.from('profiles').select('*').eq('id',session.user.id).maybeSingle();
+ if(error||!p){toast('Role/profile nahi mila. Footer ke "One-time Setup" se SQL Supabase mein run karein. '+(error?error.message:''),1);await sb.auth.signOut();return}
+ if(!p.is_active){toast('Your account is deactivated. Contact the Super Admin.',1);await sb.auth.signOut();return}
+ if(chk&&portal&&p.role!==portal){toast(`This account is "${p.role}", not authorised for the ${portal} portal.`,1);await sb.auth.signOut();return}
+ me=p;if(dlg.open)dlg.close();nav();view('dash');
+ ({student:dStudent,admin:dStaff,super_admin:dStaff})[me.role]();await load();
+ if(ch)sb.removeChannel(ch);ch=sb.channel('c').on('postgres_changes',{event:'*',schema:'public',table:'complaints'},()=>load()).subscribe()}
+async function logout(){if(ch)sb.removeChannel(ch);await sb.auth.signOut();me=null;nav();view('home');toast('Logged out')}
+sb.auth.onAuthStateChange(ev=>{if(ev==='SIGNED_OUT'){me=null;nav()}});
+async function trackIt(){const id=$('#tid').value.trim();if(!id)return toast('Enter a complaint ID',1);
+ const{data,error}=await sb.rpc('track_complaint',{cid:id});if(error)return toast(error.message,1);
+ $('#tres').innerHTML=data&&data.length?`<p>Status: <b>${esc(data[0].status)}</b> <small>(updated ${new Date(data[0].updated_at).toLocaleStri
