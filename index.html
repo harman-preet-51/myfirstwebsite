@@ -205,4 +205,77 @@ async function logout(){if(ch)sb.removeChannel(ch);await sb.auth.signOut();me=nu
 sb.auth.onAuthStateChange(ev=>{if(ev==='SIGNED_OUT'){me=null;nav()}});
 async function trackIt(){const id=$('#tid').value.trim();if(!id)return toast('Enter a complaint ID',1);
  const{data,error}=await sb.rpc('track_complaint',{cid:id});if(error)return toast(error.message,1);
- $('#tres').innerHTML=data&&data.length?`<p>Status: <b>${esc(data[0].status)}</b> <small>(updated ${new Date(data[0].updated_at).toLocaleStri
+ $('#tres').innerHTML=data&&data.length?`<p>Status: <b>${esc(data[0].status)}</b> <small>(updated ${new Date(data[0].updated_at).toLocaleString()})</small></p>`:'<p>No complaint found with this ID.</p>'}
+
+const log=(a,t,d)=>sb.from('activity_logs').insert({actor_id:me.id,action:a,target:t,details:d});
+async function load(){if(!me)return;const{data,error}=await sb.from('complaints').select('*,profiles(full_name,email)').order('created_at',{ascending:false});
+ if(error)return toast('Could not load complaints: '+error.message,1);ALL=data;list();if(me.role==='super_admin')stats()}
+function card(c){const i=ST.indexOf(c.status),sf=me.role!=='student';
+ return `<div class="card"><div class="row"><b>${esc(c.title)}</b><span class="tag">${esc(c.complaint_id)}</span>${c.escalated?'<span class="tag r">Escalated</span>':''}</div>
+<small>${esc(c.category)} • ${esc(c.location)} • ${new Date(c.created_at).toLocaleString()}${sf&&c.profiles?' • '+esc(c.profiles.full_name||c.profiles.email):''}</small><p>${esc(c.description)}</p>
+${c.media_path?`<button class="b2" data-a="ev" data-p="${esc(c.media_path)}">View evidence</button>`:''}
+<div class="tl">${ST.map((s,k)=>`<span class="${k<=i?'on':''}">${s}</span>`).join('')}</div>${c.notes?`<p class="note">Update: ${esc(c.notes)}</p>`:''}
+${sf?`<div class="row"><select id="s${c.id}">${ST.map(s=>`<option ${s==c.status?'selected':''}>${s}</option>`).join('')}</select><input id="n${c.id}" placeholder="Progress note" value="${esc(c.notes||'')}"><button data-a="sv" data-id="${c.id}">Save</button>
+${me.role==='admin'&&!c.escalated?`<button class="b2" data-a="es" data-id="${c.id}">Escalate</button>`:''}${me.role==='super_admin'?`<button class="bd" data-a="del" data-id="${c.id}">Delete</button>`:''}</div>`:''}</div>`}
+function list(){let r=ALL;if(me.role!=='student'){const s=$('#fs').value,c=$('#fc').value,q=$('#fq').value.toLowerCase();
+ r=r.filter(x=>(!s||x.status===s||(s==='Escalated'&&x.escalated))&&(!c||x.category===c)&&(!q||(x.title+x.complaint_id+x.location).toLowerCase().includes(q)))}
+ $('#list').innerHTML=r.length?r.map(card).join(''):'<div class="card"><small>No complaints found.</small></div>'}function dStudent(){$('#dash').innerHTML=`<h2>Report a problem</h2><form class="card" id="cf"><label>Category</label><select id="cc" required>${CATS.map(c=>`<option>${c}</option>`).join('')}</select>
+<div class="tip" id="tip"></div><label>Title</label><input id="ct" required maxlength="120"><label>Exact campus location (block, floor, room, landmark)</label><input id="cl" required maxlength="200">
+<label>Detailed description</label><textarea id="cd" rows="4" required maxlength="2000"></textarea><label>Photo/video evidence (optional, max 20 MB)</label><input type="file" id="cfile" accept="image/*,video/mp4,video/webm,video/quicktime">
+<p><button id="csub">Submit complaint</button></p></form><h2>My complaints <button class="b2" data-a="rf">Refresh</button></h2><div id="list"></div>`;
+ const t=()=>$('#tip').textContent='💡 Smart guidance (category-based tips, not a live AI): '+(TIPS[$('#cc').value]||DEF);$('#cc').onchange=t;t();
+ $('#cf').onsubmit=async e=>{e.preventDefault();const b=$('#csub'),f=$('#cfile').files[0];
+  if(f&&(!/^(image\/|video\/(mp4|webm|quicktime))/.test(f.type)||f.size>20971520))return toast('Only image or mp4/webm/mov video up to 20 MB allowed.',1);
+  b.disabled=true;b.textContent='Submitting…';let path=null;
+  if(f){path=`${me.id}/${Date.now()}-${f.name.replace(/[^\w.\-]/g,'_')}`;const{error}=await sb.storage.from('evidence').upload(path,f);
+   if(error){b.disabled=false;b.textContent='Submit complaint';return toast('Upload failed, complaint NOT submitted: '+error.message,1)}}
+  const{data,error}=await sb.from('complaints').insert({user_id:me.id,category:$('#cc').value,title:$('#ct').value.trim(),location:$('#cl').value.trim(),description:$('#cd').value.trim(),media_path:path}).select('complaint_id').single();
+  b.disabled=false;b.textContent='Submit complaint';if(error){if(path)sb.storage.from('evidence').remove([path]);return toast('Submit failed: '+error.message,1)}
+  toast('✅ Submitted! Your Complaint ID: '+data.complaint_id);$('#cf').reset();t();load()}}
+function dStaff(){const sa=me.role==='super_admin';
+ $('#dash').innerHTML=`<h2>${sa?'👑 Super Admin Dashboard':'🛠️ Admin Dashboard'}</h2>${sa?`<div id="stats"></div>`:''}
+<h2>Complaints <button class="b2" data-a="rf">Refresh</button></h2><div class="row card"><input id="fq" placeholder="Search title / ID / location"><select id="fs"><option value="">All status</option>${ST.map(s=>`<option>${s}</option>`).join('')}<option>Escalated</option></select><select id="fc"><option value="">All categories</option>${CATS.map(c=>`<option>${c}</option>`).join('')}</select></div><div id="list"></div>
+${sa?`<h2>Staff &amp; Admin Management — Generate Staff Login</h2><form class="card" id="sf"><div class="row"><input id="se" type="email" placeholder="Email" required><input id="sd" placeholder="Department / designation"><select id="sr"><option value="admin">Admin</option><option value="super_admin">Super Admin</option></select></div>
+<p><button>Grant Access</button></p><small>Account pehle se hai &rarr; role turant mil jata hai. Account nahi hai &rarr; person ko isi email se Student Portal par ek baar Register karna hoga, role apne aap lag jayega (apna password woh khud banata hai).</small></form><div class="card tw" id="stf"></div>
+<h2>Security &amp; Password Settings</h2><form class="card" id="pf"><label>Current password</label><input id="p0" type="password" required><label>New password (min 8)</label><input id="p1" type="password" minlength="8" required><label>Confirm new password</label><input id="p2" type="password" required><p><button>Change password</button></p></form>
+<h2>Recent activity log</h2><div class="card tw" id="lg"></div>`:''}`;
+ ['fq','fs','fc'].forEach(i=>{$('#'+i).oninput=list});
+ if(sa){loadStaff();logs();
+  $('#sf').onsubmit=async e=>{e.preventDefault();const em=$('#se').value.trim().toLowerCase(),r=$('#sr').value;
+   if(em===me.email)return toast('Aap apna khud ka role nahi badal sakte.',1);
+   if(r==='super_admin'&&!confirm('Grant SUPER ADMIN access to '+em+'?'))return;
+   const{data:p,error:e1}=await sb.from('profiles').select('id').eq('email',em).maybeSingle();if(e1)return toast(e1.message,1);
+   if(p){await upd(p.id,{role:r,is_active:true,department:$('#sd').value.trim()||null},'role_set')}
+   else{const{error}=await sb.from('role_grants').upsert({email:em,role:r});if(error)return toast(error.message,1);await log('role_grant_pending',em,r);toast('Saved. Jab ye email Student Portal par register karegi, role automatically mil jayega.')}
+   $('#sf').reset();loadStaff();logs()};
+  $('#pf').onsubmit=async e=>{e.preventDefault();if($('#p1').value!==$('#p2').value)return toast('New passwords do not match',1);
+   const{error:e1}=await sb.auth.signInWithPassword({email:me.email,password:$('#p0').value});if(e1)return toast('Current password is wrong',1);
+   const{error}=await sb.auth.updateUser({password:$('#p1').value});if(error)return toast(error.message,1);await log('password_changed',me.id,'');toast('Password changed. Use it next login.');$('#pf').reset()}}}function stats(){const n=s=>ALL.filter(c=>c.status===s).length,mx=Math.max(1,...CATS.map(k=>ALL.filter(c=>c.category===k).length));
+ $('#stats').innerHTML=`<div class="grid">${[['Total',ALL.length],['Pending',n('Submitted')],['Under Review',n('Under Review')],['In Progress',n('In Progress')],['Resolved',n('Resolved')],['Escalated',ALL.filter(c=>c.escalated).length]].map(x=>`<div class="card stat"><b>${x[1]}</b>${x[0]}</div>`).join('')}</div>
+<div class="card"><b>By category</b>${CATS.map(k=>{const v=ALL.filter(c=>c.category===k).length;return `<div class="row"><small style="width:190px">${k}</small><div class="bar" style="width:${v/mx*55}%;min-width:4px"></div><small>${v}</small></div>`}).join('')}</div>`}
+async function loadStaff(){const[{data,error},{data:g}]=await Promise.all([sb.from('profiles').select('*').in('role',['admin','super_admin']).order('created_at'),sb.from('role_grants').select('*')]);if(error)return toast(error.message,1);
+ $('#stf').innerHTML=`<table><tr><th>Email</th><th>Role</th><th>Status</th><th>Actions</th></tr>${data.map(p=>`<tr><td>${esc(p.email)}<br><small>${esc(p.full_name||'')} ${esc(p.department||'')}</small></td><td>${p.role}</td><td>${p.is_active?'Active':'Deactivated'}</td><td>${p.id===me.id?'<small>(you)</small>':`<button class="b2" data-a="role" data-id="${p.id}" data-r="${p.role==='admin'?'super_admin':'admin'}">Make ${p.role==='admin'?'Super Admin':'Admin'}</button> <button class="b2" data-a="act" data-id="${p.id}" data-v="${!p.is_active}">${p.is_active?'Deactivate':'Activate'}</button> <button class="bd" data-a="rev" data-id="${p.id}">Revoke</button>`}</td></tr>`).join('')}
+${(g||[]).map(x=>`<tr><td>${esc(x.email)}<br><small>Pending (abhi register nahi kiya)</small></td><td>${x.role}</td><td>Pending</td><td><button class="bd" data-a="rg" data-e="${esc(x.email)}">Remove</button></td></tr>`).join('')}</table>`}
+async function logs(){const{data}=await sb.from('activity_logs').select('*').order('created_at',{ascending:false}).limit(15);
+ $('#lg').innerHTML=`<table>${(data||[]).map(l=>`<tr><td>${new Date(l.created_at).toLocaleString()}</td><td>${esc(l.action)}</td><td>${esc(l.target||'')} ${esc(l.details||'')}</td></tr>`).join('')||'<tr><td>No activity yet</td></tr>'}</table>`}
+async function upd(id,patch,act){const{data,error}=await sb.from('profiles').update(patch).eq('id',id).select();
+ if(error)return toast(error.message,1);if(!data.length)return toast('Not allowed (aap apna khud ka access nahi badal sakte).',1);
+ await log(act,id,JSON.stringify(patch));toast('Updated');loadStaff();logs()}
+$('#dash').onclick=async e=>{const t=e.target.closest('[data-a]');if(!t)return;const a=t.dataset.a,id=t.dataset.id;
+ if(a==='rf')return load();
+ if(a==='ev'){const{data,error}=await sb.storage.from('evidence').createSignedUrl(t.dataset.p,300);return error?toast(error.message,1):window.open(data.signedUrl,'_blank')}
+ if(a==='sv'){const s=$('#s'+id).value,n=$('#n'+id).value;const{error}=await sb.from('complaints').update({status:s,notes:n,updated_at:new Date().toISOString()}).eq('id',id);
+  if(error)return toast(error.message,1);await log('status_change',id,s);toast('Saved');return load()}
+ if(a==='es'){const{error}=await sb.from('complaints').update({escalated:true,updated_at:new Date().toISOString()}).eq('id',id);if(error)return toast(error.message,1);await log('escalated',id,'');toast('Escalated to Super Admin');return load()}
+ if(a==='del'){if(!confirm('Permanently delete this complaint?'))return;const c=ALL.find(x=>x.id===id);const{error}=await sb.from('complaints').delete().eq('id',id);
+  if(error)return toast(error.message,1);if(c&&c.media_path)sb.storage.from('evidence').remove([c.media_path]);await log('complaint_deleted',c?c.complaint_id:id,'');toast('Deleted');return load()}
+ if(a==='role'){if(!confirm('Change role to '+t.dataset.r+'?'))return;return upd(id,{role:t.dataset.r},'role_changed')}
+ if(a==='act')return upd(id,{is_active:t.dataset.v==='true'},'active_changed');
+ if(a==='rev'){if(!confirm('Revoke all staff access for this person?'))return;return upd(id,{role:'student'},'access_revoked')}
+ if(a==='rg'){const{error}=await sb.from('role_grants').delete().eq('email',t.dataset.e);if(error)return toast(error.message,1);toast('Removed');loadStaff()}};
+(async()=>{const h=location.hash;await boot(false);
+ if(/type=(invite|recovery)/.test(h)&&me){const p=prompt('Set your new password (min 8 characters):');
+  if(p&&p.length>=8){const{error}=await sb.auth.updateUser({password:p});toast(error?error.message:'Password set.',!!error)}history.replaceState(null,'',location.pathname)}})();
+nav();
+</script></body></html>
+  
