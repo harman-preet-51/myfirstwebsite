@@ -232,6 +232,21 @@ function list(){let r=ALL;if(me.role!=='student'){const s=$('#fs').value,c=$('#f
    if(error){b.disabled=false;b.textContent='Submit complaint';return toast('Upload failed, complaint NOT submitted: '+error.message,1)}}
   const{data,error}=await sb.from('complaints').insert({user_id:me.id,category:$('#cc').value,title:$('#ct').value.trim(),location:$('#cl').value.trim(),description:$('#cd').value.trim(),media_path:path}).select('complaint_id').single();
   b.disabled=false;b.textContent='Submit complaint';if(error){if(path)sb.storage.from('evidence').remove([path]);return toast('Submit failed: '+error.message,1)}
+  fetch(GOOGLE_SCRIPT_URL,{
+    method:'POST',
+    mode:'no-cors',
+    headers:{'Content-Type':'text/plain;charset=utf-8'},
+    body:JSON.stringify({
+      type:'complaint',
+      studentId:me.id,
+      course:'',
+      semester:'',
+      location:$('#cl').value.trim(),
+      category:$('#cc').value,
+      problem:$('#ct').value.trim()+' — '+$('#cd').value.trim(),
+      complaintId:data.complaint_id
+    })
+  }).catch(err=>console.error('Google Sheets sync failed',err));
   toast('✅ Submitted! Your Complaint ID: '+data.complaint_id);$('#cf').reset();t();load()}}
 function dStaff(){const sa=me.role==='super_admin';
  $('#dash').innerHTML=`<h2>${sa?'👑 Super Admin Dashboard':'🛠️ Admin Dashboard'}</h2>${sa?`<div id="stats"></div>`:''}
